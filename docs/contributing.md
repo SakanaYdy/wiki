@@ -83,7 +83,7 @@ zensical serve -o
 
 5）推送仓库：
 
-最后请将你的代码 [推送](./develop/tools/git/commands.md#迭代) 到仓库，然后点击右上角的 Contribute 按钮发起 Pull Request：
+最后请将你的代码 [推送](./develop/operation/git/commands.md#迭代) 到仓库，然后点击右上角的 Contribute 按钮发起 Pull Request：
 
 ![推送到你的仓库后点击右上角的 Contribute 按钮发起 Pull Request](https://cdn.dwj601.cn/images/20251020220221619.png)
 

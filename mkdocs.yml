@@ -59,6 +59,8 @@ theme:
     - toc.follow                   # 目录跟随滚动（需要 markdown_extensions.toc.permalink 开启）
     # - announce.dismiss             # 支持手动关闭公告
 
+validation:
+  unresolved_references: false
 
 # ==================== 语法扩展 ====================
 markdown_extensions:

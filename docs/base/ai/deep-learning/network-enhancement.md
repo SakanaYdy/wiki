@@ -36,7 +36,7 @@ status: todo
 
 **学习率的动态调整算法**。一般来说就是两个阶段，在初期的阶段，学习率线性增长，在之后的阶段中，学习率逐渐衰减。详情见 Facebook 的这篇论文 [Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour [2018]](https://arxiv.org/pdf/1706.02677)。
 
-下图展示了预热学习率调整的学习效果。图源：[Bag of Tricks for Image Classification with Convolutional Neural Networks [2018]](https://arxiv.org/abs/1812.01187v2)。
+[下图](https://arxiv.org/abs/1812.01187v2) 展示了预热学习率调整的学习效果：
 
 ![Visualization of learning rate schedules with warm-up.  Top:  cosine and step schedules for batch size 1024. Bottom: Top-1 validation accuracy curve with regard to the two schedules.](https://cdn.dwj601.cn/images/202412201601516.jpg)
 
