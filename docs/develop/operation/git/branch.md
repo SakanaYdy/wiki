@@ -76,7 +76,7 @@ A---B---C---D'---E'  main
 基本命令：
 
 ```bash
-# 将 feature 分支变基合并到 main
+# 假设当前在 feature 开发，想先把 main 的变动合并过来继续开发
 git switch feature
 git rebase main
 

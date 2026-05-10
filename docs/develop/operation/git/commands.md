@@ -162,7 +162,20 @@ git pull
 
 # 变基合并
 git pull --rebase
+
+# 【慎重】压缩合并（压缩远程提交记录）
+git pull --squash
+# 之后远程的修改已经全部合并并放在了暂存区，此时需要手动 commit 一次，编写压缩后的 comment
+
+# 【常见】压缩合并（压缩本地提交记录）
+git pull --rebase=interactive
+# 之后首先会跳出一个包含多行 pick 开头的编辑界面，将从第二行开始的所有 pick 改为 squash 或 s 即可
+# 然后会跳出一个编辑界面，用于编写合并后的 comment
 ```
+
+> [!note]
+>
+> 不同合并方法的差异详见 [分支合并](./branch.md#分支合并) 的介绍。
 
 `git pull` 其实隐藏了中间步骤，其本质上包括两个操作步骤：
 
