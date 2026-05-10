@@ -5,29 +5,21 @@ icon: material/tools
 
 ## 软件管理器 apt
 
-apt (advanced package tool) 是 Ubuntu/Debian 自带的软件管理工具，可以通过命令管理机器上的所有软件。下面简单罗列一下 apt 的常用命令及其功能：
+apt (advanced package tool) 是 Ubuntu/Debian 自带的软件管理工具。
 
-更新软件的版本索引：
+基本命令：
 
 ```bash
+# 更新软件的版本索引
 apt update
-```
 
-更新软件（需先更新软件的版本索引）：
-
-```bash
+# 更新软件（需先更新软件的版本索引）
 apt upgrade <package_name>
-```
 
-安装软件：
-
-```bash
+# 安装软件
 apt install <package_name>:<version>
-```
 
-卸载软件：
-
-```bash
+# 卸载软件
 apt remove <package_name>
 ```
 
@@ -104,20 +96,45 @@ tree 是一个目录可视化工具，适合展示或查看指定目录下的文
 
     手动下载 tree 的二进制程序 [Tree for Windows](https://gnuwin32.sourceforge.net/packages/tree.htm)，下载后将二进制程序的路径加入环境变量即可使用。
 
-基本命令：
+命令格式：
 
 ```bash
 tree [-option] [dir]
 ```
 
-常见参数：
+基本命令：
 
-- 显示中文：`-N`。如果中文名是中文，不加 `-N` 有些电脑上是乱码的；
-- 选择展示的层级：`-L [n]`；
-- 只显示文件夹：`-d`；
-- 区分文件夹、普通文件、可执行文件：`-FC`。`C` 是加上颜色；
-- 起别名：`alias tree='tree -FCN'`；
-- 输出目录结构到文件： `tree -L 2 -I '*.js|node_modules|*.md|*.json|*.css|*.ht' > tree.txt`。
+```bash
+# 显示中文（防止中文名在某些电脑上出现乱码）
+tree -N
+
+# 选择展示的层级
+tree -L <level_number>
+
+# 只显示文件夹
+tree -d
+
+# 区分文件夹、普通文件、可执行文件（C 是加上颜色）
+tree -FC
+
+# 起别名（将常用组合简化为一个命令，可写入 ~/.bashrc 或 ~/.zshrc）
+alias tree='tree -FCN'
+
+# 排除特定文件或目录，并输出目录结构到文件
+tree -L 2 -I '*.js|node_modules|*.md|*.json|*.css|*.ht' > tree.txt
+
+# 按文件最后修改时间排序
+tree -t
+
+# 反向排序（按字母倒序，或者与 -t 连用表示按时间倒序）
+tree -r
+
+# 自然排序（按版本号/数字大小自然排序，例如区分 1, 2, 10 的顺序）
+tree -v
+
+# 文件夹优先
+tree --dirsfirst
+```
 
 ## 多路复用器 tmux
 
@@ -168,121 +185,92 @@ wget 是 Linux 系统中自带的命令行下载工具，支持 HTTP/HTTPS、FTP
 >
 > Windows 上可以下载 [Windows binaries of GNU Wget](https://eternallybored.org/misc/wget/) 二进制程序来使用。
 
-单个文件下载最基本的命令格式是：
+命令格式：
 
 ```bash
-wget [url]
+wget [<param>] <url>
 ```
 
-常用参数如下（更多内容可通过 `wget --help` 查看）：
+基本命令：
 
-- 指定输出文件名：
+```bash
+# 指定保存的文件名
+wget -O <filename> <url>
 
-    ```bash
-    wget -O myfile.txt [url]
-    ```
+# 指定保存路径
+wget -P </path/to/dir> <url>
 
-- 指定下载文件的保存目录：
+# 下载指定文件中所有 url 对应的内容
+wget -i <urls.txt>
 
-    ```bash
-    wget -P /path/to/directory [url]
-    ```
+# 后台下载（下载的日志会被保存到 wget.log 文件中）
+wget -b <url>
 
-- 批量下载指定文件中所有 url 对应的内容：
+# 断点续传
+wget -c <url>
 
-    ```bash
-    wget -i urls.txt
-    ```
+# 断点续传（最多 5 次）
+wget -c -t 5 <url>
 
-- **断点续传**：
+# 递归下载
+wget -r <url>
 
-    ```bash
-    wget -c [url]
-    
-    # 尝试 5 次
-    wget -c -t 5 [url]
-    ```
-
-- **递归下载**：
-
-    ```bash
-    wget -r [url]
-    
-    # 下载一个网站中的所有以 .pdf 为后缀的文件
-    wget -r -A.pdf [url]
-    ```
-
-- 后台下载：
-
-    ```bash
-    # 下载的日志会被保存到 wget.log 文件中
-    wget -b [url]
-    ```
+# 递归下载一个网站中的所有以 .pdf 为后缀的文件
+wget -r -A.pdf [url]
+```
 
 ## 高性能下载器 aria2
 
-[aria2](https://github.com/aria2/aria2) 是一款轻量级、高性能的命令行下载工具，支持 HTTP/HTTPS、FTP、SFTP 等常见协议，和 [wget](#下载器-wget) 相比最大的优势在于可以多线程下载。
+[aria2](https://github.com/aria2/aria2) 是一款轻量级、高性能的命令行下载工具，支持 HTTP/HTTPS、FTP、SFTP 等常见协议，和 [wget](#下载器-wget) 相比最大的优势在于可以多线程下载，适用于单线程跑不满下行带宽的场景。
 
-> [!note]
+> [!warning]
 >
-> 安装 aria2：
->
-> === "Ubuntu"
->
->     ```bash
->     apt update && apt install aria2
->     ```
->
-> === "CentOS"
->
->     ```bash
->     yum update && yum install aria2
->     ```
->
-> === "macOS"
->
->     ```bash
->     brew install aria2
->     ```
->
-> === "Windows"
->
-> ​    在 aria2 的 [GitHub Release](https://github.com/aria2/aria2/releases) 界面下载对应的版本即可。
+> 线程数需要适当设置，开多了容易被误判为爬虫从而被封禁 IP。
 
-单个文件下载最基本的命令格式是（单线程）：
+安装 aria2：
+
+=== "Ubuntu"
+
+    ```bash
+    apt update && apt install aria2
+    ```
+
+=== "CentOS"
+
+    ```bash
+    yum update && yum install aria2
+    ```
+
+=== "macOS"
+
+    ```bash
+    brew install aria2
+    ```
+
+=== "Windows"
+
+    在 aria2 的 [GitHub Release](https://github.com/aria2/aria2/releases) 界面下载对应的版本即可。
+
+命令格式：
 
 ```bash
-aria2c <URL>
+aria2c <url>
 ```
 
-常用参数如下（更多内容可通过 `aria2c --help` 查看）：
+基本命令：
 
-- **多线程下载**：
+```bash
+# 多线程下载（aria2 会将文件分成多个部分并通过不同的连接进行下载）
+aria2c -x 4 <url>
 
-    ```bash
-    # aria2 会将文件分成多个部分并通过不同的连接进行下载，例如 4 线程
-    aria2c -x 4 <URL>
-    ```
+# 断点续传
+aria2c -c <url>
 
-    > [!warning]
-    >
-    > 多线程下载仅适用于单线程跑不满下行带宽的场景，线程开多了容易被误判为爬虫从而被封禁 IP。
+# 下载指定文件中所有 url 对应的内容
+aria2c -i <urls.txt>
+```
 
-- **断点续传**：
-
-    ```bash
-    aria2c -c <URL>
-    ```
-
-- 下载多个文件：
-
-    ```bash
-    aria2c -i urls.txt
-    ```
-
-> [!note]
->
-> wget vs. aria2:
+> [!note] wget vs. aria2
 >
 > 以服务器下载 HuggingFace [某个 9GB 单文件](https://huggingface.co/datasets/jingyaogong/minimind_dataset/blob/main/sft_2048.jsonl) 为例：
 >
@@ -301,24 +289,29 @@ aria2c <URL>
 
 ## 文件传输工具 scp
 
-在计算机网络应用层中，我们介绍了安全复制协议 [SCP](../../../base/cs/computer-network/application-layer.md#scp-协议)，基于该协议，工程师开发了安全复制程序——scp，用来作为点对点的数据加密传输工具。
+在计算机网络应用层中，我们介绍了安全复制协议 [SCP](../../../base/cs/computer-network/application-layer.md#scp-协议)，基于该协议，工程师开发了安全复制程序 `scp` 作为点对点的数据加密传输工具。
 
-该程序就两个核心用法：
+命令格式：
 
-- 拉取数据：
+```bash
+scp [param] <source> <target>
+```
 
-    ```bash
-    scp user@xxx.xxx.xxx.xxx:/path/to/source /path/to/target
-    ```
+基本命令：
 
-- 推送数据：
+```bash
+# 从服务器拉取数据到本地
+scp <user@xxx.xxx.xxx.xxx:/path/to/source> </path/to/target>
 
-    ```bash
-    scp /path/to/source user@xxx.xxx.xxx.xxx:/path/to/target
-    ```
+# 把本地的数据推送到服务器
+scp </path/to/source> <user@xxx.xxx.xxx.xxx:/path/to/target>
 
-常见参数：
+# 指定端口
+scp [-P <port>] <source> <target>
 
-- 使用 `-P <port>` 指定端口；
-- 使用 `-i <path/to/private_key>` 指定私钥；
-- 使用 `-r` 表示在文件夹下递归。
+# 指定私钥
+scp [-i <path/to/private_key>] <source> <target>
+
+# 递归传输（适用于文件夹）
+scp [-r] <source> <target>
+```

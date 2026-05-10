@@ -3,7 +3,7 @@ title: VSCode
 icon: material/microsoft-visual-studio-code
 ---
 
-[VSCode](https://code.visualstudio.com/) 是微软开发并开源的编辑器，比较适合一些轻量项目的开发工具。
+[VSCode](https://code.visualstudio.com/) 是微软开发并开源的编辑器，比较适合作为轻量项目的开发工具。
 
 ## 离线安装插件
 
@@ -29,6 +29,8 @@ VSCode 支持不同的配置级别：
 1. 工作区级：仅对当前项目奏效，适合团队使用 VSCode 开发时协作使用。该级别的配置会持久化在项目根目录的 `.vscode/settings.json` 文件中。
 2. 用户级：该用户的所有项目均使用该配置，适合个人开发时使用。
 3. 默认级：系统默认配置，无法修改。
+
+如果登陆了 VSCode，配置好后 VSCode 会自动将配置内容同步到云，后续切换环境时只需要登陆 VSCode 就可以自动同步所有配置。
 
 ## 代码跳转
 
