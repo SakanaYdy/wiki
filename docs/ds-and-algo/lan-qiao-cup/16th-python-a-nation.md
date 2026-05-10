@@ -35,7 +35,7 @@ icon: material/medal-outline
 
 ## T7
 
-结点数规模为 5×103，每个点都跑一遍 DFS 统计一下即可。
+结点数规模为 $5\times 10^3$，每个点都跑一遍 DFS 统计一下即可。
 
 ## T8
 
