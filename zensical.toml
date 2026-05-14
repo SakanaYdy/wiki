@@ -269,20 +269,14 @@ nav = [
       "llm/downstream/api-provider.md",
       { "智能体" = [
         "llm/downstream/agent/index.md",
-        { "核心概念" = [
-          "llm/downstream/agent/react.md",
-          "llm/downstream/agent/tool-use.md",
-          "llm/downstream/agent/planning.md",
-          "llm/downstream/agent/memory.md",
-        ] },
-        { "进阶主题" = [
-          "llm/downstream/agent/multi-agent.md",
-          "llm/downstream/agent/frameworks.md",
-          "llm/downstream/agent/mcp.md",
-        ] },
-        { "面试专题" = [
-          "llm/downstream/agent/interview.md",
-        ] },
+        "llm/downstream/agent/react.md",
+        "llm/downstream/agent/tool-use.md",
+        "llm/downstream/agent/planning.md",
+        "llm/downstream/agent/memory.md",
+        "llm/downstream/agent/multi-agent.md",
+        "llm/downstream/agent/frameworks.md",
+        "llm/downstream/agent/mcp.md",
+        "llm/downstream/agent/interview.md",
       ] },
     ] },
   ] },
