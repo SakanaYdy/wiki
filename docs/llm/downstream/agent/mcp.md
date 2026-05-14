@@ -1,5 +1,5 @@
 ---
-title: MCP 协议
+title: MCP
 status: todo
 icon: lucide/plug
 ---
@@ -92,5 +92,3 @@ sequenceDiagram
 - [MCP 官方规范](https://modelcontextprotocol.io/)
 - [Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers)
 - 主流 MCP Server：文件系统、GitHub、Slack、数据库、搜索引擎等。
-
-
