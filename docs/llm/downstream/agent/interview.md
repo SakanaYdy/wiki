@@ -1,10 +1,10 @@
 ---
-title: Agent 面试指南
+title: 面试指南
 status: todo
 icon: lucide/graduation-cap
 ---
 
-本文整理了 Agentic Model 方向的高频面试问题，帮助读者系统性地准备相关面试。
+本文整理了 Agent 方向的高频面试问题，帮助读者系统性地准备相关面试。
 
 ## 基础概念
 
