@@ -267,6 +267,17 @@ nav = [
     { "下游应用" = [
       "llm/downstream/index.md",
       "llm/downstream/api-provider.md",
+      { "智能体" = [
+        "llm/downstream/agent/index.md",
+        "llm/downstream/agent/react.md",
+        "llm/downstream/agent/tool-use.md",
+        "llm/downstream/agent/planning.md",
+        "llm/downstream/agent/memory.md",
+        "llm/downstream/agent/multi-agent.md",
+        "llm/downstream/agent/frameworks.md",
+        "llm/downstream/agent/mcp.md",
+        "llm/downstream/agent/interview.md",
+      ] },
     ] },
   ] },
   "contributing.md",
