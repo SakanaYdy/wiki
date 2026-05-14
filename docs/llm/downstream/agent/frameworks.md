@@ -1,5 +1,5 @@
 ---
-title: Agent 框架
+title: 智能体框架
 status: todo
 icon: lucide/package
 ---
@@ -62,5 +62,3 @@ Anthropic 推出的 Agent 开发方案，核心理念是：
 > [!note]
 >
 > 框架生态变化很快，选择时建议关注官方文档的更新频率和社区活跃度。对于简单场景，直接使用原生 API + Function Calling 往往更高效。
-
-
