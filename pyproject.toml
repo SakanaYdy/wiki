@@ -1,9 +1,9 @@
 [project]
 name = "Open-CSAI-Wiki"
 version = "0.0.1"
-description = "Vincent's Wiki"
+description = "A collection of structured notes covering Fundamentals, Data Structures & Algorithms, Software Development, LLMs and more"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "zensical>=0.0.41",
+    "zensical>=0.0.42",
 ]

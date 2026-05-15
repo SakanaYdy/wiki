@@ -5,7 +5,7 @@
 <p align="center">
   <a title="GitHub Stars" href="https://github.com/Explorer-Dong/wiki/stargazers" target="_blank"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Explorer-Dong/wiki?style=flat&label=GitHub%20Stars"></a>
   <a title="Python Version" href="https://python.org" target="_blank"><img src="https://img.shields.io/badge/Python-3.13+-aff" alt="Python Version"></a>
-  <a title="Zensical Version" href="https://github.com/zensical/zensical" target="_blank"><img src="https://img.shields.io/badge/Zensical-0.0.41+-gold" alt="Mkdocs Material"></a>
+  <a title="Zensical Version" href="https://github.com/zensical/zensical" target="_blank"><img src="https://img.shields.io/badge/Zensical-0.0.42+-gold" alt="Zensical Version"></a>
   <a title="Ask DeepWiki" href="https://deepwiki.com/Explorer-Dong/wiki" target="_blank"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
   <a title="GitHub Actions Workflow Status" href="https://github.com/Explorer-Dong/wiki/actions/workflows/deploy_document.yml" target="_blank"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Explorer-Dong/wiki/deploy_document.yml?label=Deploy"></a>
   <a title="License" href="https://github.com/Explorer-Dong/wiki/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/Explorer-Dong/wiki.svg?style=flat&label=License" alt="License"></a>
@@ -30,7 +30,7 @@
 
 ## 参与贡献
 
-碍于笔者认知，博客内容难免有些偏差。如果您在阅读的过程中遇到了困惑，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](https://wiki.dwj601.cn/contributing/) 作进一步了解。下图是本项目的协作者：
+碍于笔者认知，博客内容难免有些偏差或不足。如果您在阅读的过程中遇到了困惑，或者希望完善项目，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](https://wiki.dwj601.cn/contributing/) 作进一步了解。下图是本项目的协作者：
 
 <a href="https://github.com/Explorer-Dong/wiki/graphs/contributors">
   <img src="https://stg.contrib.rocks/image?repo=Explorer-Dong/wiki" alt="Project Collaborators" />
@@ -38,7 +38,7 @@
 
 ## 星标历史
 
-如果觉得网站的内容对您有帮助，欢迎为项目点一颗 ⭐！下图是本项目的星标历史：
+如果觉得网站的内容对您有帮助，欢迎为项目点一颗⭐！下图是本项目的星标历史：
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&theme=dark&legend=bottom-right" />
