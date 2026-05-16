@@ -1,10 +1,10 @@
 [project]
-site_name = "Open CS/AI Wiki"
+site_name = "开放 CS/AI 知识库"
 site_url = "https://wiki.dwj601.cn/"
-repo_url = "https://github.com/Explorer-Dong/wiki"
-repo_name = "Explorer-Dong/wiki"
+repo_url = "https://github.com/Explorer-Dong/open-csai-wiki"
+repo_name = "Open CS/AI Wiki"
 edit_uri = "edit/main/docs/"
-copyright = "&copy; 2026 Vincent"
+copyright = "&copy; 2026 Open CS/AI Wiki Team."
 extra_javascript = [
   "https://registry.npmmirror.com/katex/0.16.21/files/dist/katex.min.js",
   "https://registry.npmmirror.com/katex/0.16.21/files/dist/contrib/auto-render.min.js",

@@ -60,13 +60,13 @@ git config credential.helper <mode>
 使用 HTTPs 协议克隆远程仓库，例如：
 
 ```bash
-git clone https://github.com/Explorer-Dong/wiki.git
+git clone https://github.com/Explorer-Dong/open-csai-wiki.git
 ```
 
 使用 SSH 协议连接远程仓库，例如：
 
 ```bash
-git clone git@github.com:Explorer-Dong/wiki.git
+git clone git@github.com:Explorer-Dong/open-csai-wiki.git
 ```
 
 具体用哪一种取决于你的开发场景，主要就以下两种：
@@ -203,7 +203,7 @@ ${{ <type>.<key> }}
 
 > [!note]
 >
-> 利用 GitHub Actions 将静态网站部署到 Aliyun OSS 上（这也是本网站目前的 [部署方法](https://github.com/Explorer-Dong/wiki/blob/main/.github/workflows/deploy_document.yml) 哟 😉）。
+> 利用 GitHub Actions 将静态网站部署到 Aliyun OSS 上（这也是本网站目前的 [部署方法](https://github.com/Explorer-Dong/open-csai-wiki/blob/main/.github/workflows/deploy_document.yml) 哟 😉）。
 >
 > 如果你用的是 VSCode 编写工作流，可以安装 GitHub 自己开发的 [Actions 插件](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions) 获得更好的编辑体验。
 

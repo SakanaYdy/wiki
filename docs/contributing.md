@@ -20,7 +20,7 @@ title: 参与贡献
 
 如果你想直接编辑网页中的内容，请按照下面的流程进行：
 
-1）进入项目的 [GitHub](https://github.com/Explorer-Dong/wiki) 地址，点击右上角的 `Fork` 按钮并确认：
+1）进入项目的 [GitHub](https://github.com/Explorer-Dong/open-csai-wiki) 地址，点击右上角的 `Fork` 按钮并确认：
 
 ![进入项目的 GitHub 地址，点击右上角的 Fork 按钮并确认](https://cdn.dwj601.cn/images/20251020215405589.png)
 
@@ -38,7 +38,7 @@ title: 参与贡献
 
 该方法适合本地预览你的修改。请确保本地已经安装好 [Git](./develop/operation/git/index.md#安装-git) 和 [Python](./develop/backend/python/index.md#安装-python)，具体操作如下：
 
-1）进入项目的 [GitHub](https://github.com/Explorer-Dong/wiki) 地址，点击右上角的 `Fork` 按钮并确认：
+1）进入项目的 [GitHub](https://github.com/Explorer-Dong/open-csai-wiki) 地址，点击右上角的 `Fork` 按钮并确认：
 
 ![进入项目的 GitHub 地址，点击右上角的 Fork 按钮并确认](https://cdn.dwj601.cn/images/20251020215405589.png)
 

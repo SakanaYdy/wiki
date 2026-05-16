@@ -383,4 +383,4 @@ KKT 条件：
 
 ## 后记
 
-考试题型见 [git 的历史](https://github.com/Explorer-Dong/wiki/blob/ef27e7525eb1255d000509a0b5da88cbe4f472db/source/_posts/GPA/4th-term/OptMethod.md#后记)，就不放这里丢人现眼了 🤣。
+考试题型见 [git 的历史](https://github.com/Explorer-Dong/open-csai-wiki/blob/ef27e7525eb1255d000509a0b5da88cbe4f472db/source/_posts/GPA/4th-term/OptMethod.md#后记)，就不放这里丢人现眼了 🤣。
