@@ -90,8 +90,11 @@ fruits.append("orange")
 # 尾删除 O(1)
 fruits.pop()
 
-# 删除第一个匹配到的元素 O(n)
+# 按值删除 O(n)，删除第一个匹配到的元素
 fruits.remove("banana")
+
+# 按索引删除 O(n)
+del fruits[1]
 
 # 索引（超出最大索引值会报错 list index out of range）
 print(fruits[0])

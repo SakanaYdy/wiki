@@ -192,9 +192,6 @@ nav = [
         "develop/backend/python/async-lib.md",
         "develop/backend/python/network-lib.md",
         "develop/backend/python/dbms-lib.md",
-        "develop/backend/python/compute-lib.md",
-        "develop/backend/python/data-analyze-lib.md",
-        "develop/backend/python/visual-lib.md",
       ] },
     ] },
     { "运维" = [
@@ -253,7 +250,14 @@ nav = [
       "llm/infra/index.md",
       "llm/infra/accelerator.md",
       "llm/infra/huggingface.md",
-      "llm/infra/pytorch.md",
+      { "Python AI" = [
+        "llm/infra/python-ai/index.md",
+        "llm/infra/python-ai/compute-lib.md",
+        "llm/infra/python-ai/data-analyze-lib.md",
+        "llm/infra/python-ai/visual-lib.md",
+        "llm/infra/python-ai/progress-bar-lib.md",
+        "llm/infra/python-ai/neural-network-lib.md",
+      ] },
       "llm/infra/serving-framework.md",
     ] },
     { "模型原理" = [
