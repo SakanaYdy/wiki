@@ -4,127 +4,108 @@ status: todo
 icon: material/stairs-up
 ---
 
-本文介绍 Python 的语法基础，即不 `import` 任何包的情况下需要涉及到的内容，标准文档见 [Reference - Python Docs](https://docs.python.org/zh-cn/3.14/reference/index.html) 官网。
+本文介绍 Python 的 [语法基础](https://docs.python.org/zh-cn/3.14/reference/index.html)，即不 `import` 任何包的情况下涉及的内容。
 
 ## 数据类型
 
-Python 是动态类型语言，变量不需要声明类型，赋值时会自动确定类型。
+Python 是动态类型语言，定义变量时不需要声明类型，赋值时会自动确定。但也支持在定义变量时写上预期的数据类型，不过解释器不会主动检查数据类型不匹配的问题，可以借助第三方 [类型检查](./index.md#类型检查) 工具来避免此类错误。
 
-> [!tip]
->
-> Python 支持在声明变量时写上预期的数据类型，但并不会主动检查数据类型不匹配的错误，可以借助第三方 [类型检查](./index.md#类型检查) 工具来避免此类错误。
+### 不可变数据类型
 
-### 整型
-
-```python
-x: int = 10
-```
-
-### 浮点型
-
-```python
-y: float = 3.14
-```
-
-### 布尔型
+`bool`:
 
 ```python
 is_active: bool = True
 ```
 
-### 字符串
-
-基本用法：
+`int`:
 
 ```python
+x: int = 10
+```
+
+`float`:
+
+```python
+y: float = 3.14
+```
+
+`str`:
+
+```python
+# 基本用法
 info: str = "Alice"
-```
 
-字符转义：
-
-```python
+# 字符转义
 info = "hello\tworld"  # hello    world
-
+# 取消字符转义，输出原始内容（r 即 raw）
 info = r"hello\tworld"  # hello\tworld
-```
 
-其中：
-
-- Python 会对其中的特殊字符转义，例如 `\t` 会被转义为一个 tab；
-- `r` 表示输出原始内容，不会对其中的内容进行转义。
-
-字符模板 (f-string)：
-
-```python
+# 字符模板 (f-string)
 age = 18.88
 info = (f"My age is {age:.1f}, "
         f"and you?")  # My age is 18.9, and you?
+# 跨行字符串可以使用小括号包裹
+# :.1f 表示给浮点数四舍五入保留 1 位小数
 ```
 
-其中：
-
-- 跨行字符串可以使用小括号包裹；
-- 模板中 `:.1f` 表示给浮点数四舍五入保留 1 位小数。
-
-### 列表
-
-可变序列。可以理解为线性表，$O(1)$ 尾插入、$O(1)$ 尾删除：
-
-```python
-# 初始化
-fruits = ["apple", "banana", "cherry"]
-
-# 尾插入
-fruits.append("orange")
-
-# 尾删除
-fruits.pop()
-
-# 删除第一个匹配到的元素
-fruits.remove("banana")
-
-print(fruits[0])    # 访问列表第一个元素
-print(fruits[1:3])  # 切片，访问第二到第三个元素
-```
-
-列表推导式是创建列表的一种简洁方式：
-
-```python
-squares = [x**2 for x in range(5)]  # 生成 0 到 4 的平方
-print(squares)
-```
-
-### 元组
-
-不可变的序列类型，一旦创建不能修改：
+`tuple`:
 
 ```python
 coordinates = (10, 20)
 print(coordinates[0])  # 访问元组的第一个元素
 ```
 
-### 字典
+### 可变数据类型
 
-由键值对组成：
+`dict`: 键值对数据结构
 
 ```python
+# 字典创建（可哈希对象才能作为键，不可变数据类型都可以作为字典的键）
 person = {"name": "Alice", "age": 25}
-person["age"] = 26           # 修改字典中的值
-person["city"] = "New York"  # 添加新的键值对
 
-print(person["name"])  # 访问值
+# 值修改
+person["age"] = 26
+
+# 创建新的键值对
+person["city"] = "New York"
+
+# 根据键访问值
+print(person["name"])
+print(person.get("name", "")) 更安全的访问方法，当字典不存在时，返回第二个参数，这里是 ""
 ```
 
-### 集合
+`list`: 线性表数据结构
 
-一个无序且不重复的元素集合：
+```python
+# 初始化
+fruits = ["apple", "banana", "cherry"]
+
+# 初始化（列表推导式）
+squares = [x**2 for x in range(5)]  # 生成 0 到 4 的平方
+
+# 尾插入 O(1)
+fruits.append("orange")
+
+# 尾删除 O(1)
+fruits.pop()
+
+# 删除第一个匹配到的元素 O(n)
+fruits.remove("banana")
+
+# 索引（超出最大索引值会报错 list index out of range）
+print(fruits[0])
+
+# 切片（超出最大索引不会报错）
+print(fruits[1:3])
+```
+
+`set`: 集合数据结构
 
 ```python
 colors = {"red", "green", "blue"}
 colors.add("yellow")  # 添加元素
 colors.remove("green")  # 删除元素
-
-print(colors)
 ```
 
 ## 运算符
@@ -280,11 +261,35 @@ Python 中的解包机制让参数传递变得更灵活。解包分成两类：
 
 ### lambda
 
-lambda 函数是一种简洁的匿名函数，通常用于简单的函数体。
+`lambda` 函数是一种简洁的匿名函数，适合编写非常简单、一次性的函数逻辑：
 
 ```python
 square = lambda x: x**2
 print(square(5))  # 25
+```
+
+不过，根据 [PEP 8](https://peps.python.org/pep-0008/#programming-recommendations) 的建议，在真实项目中并不推荐将 `lambda` 赋值给变量，应当使用 `def` 定义函数：
+
+```diff
+- square = lambda x: x**2
++ def square(x):
++     return x**2
+```
+
+原因包括：
+
+- 使用 `def` 会让函数名出现在 traceback 中，更有利于调试。
+- `lambda` 的核心价值在于内联使用，一旦赋值给变量就失去了匿名函数的意义。
+
+因此，`lambda` 更适合作为参数直接传递给高阶函数：
+
+```python
+# 示例一
+nums = [1, 2, 3]
+result = map(lambda x: x * 2, nums)
+
+# 示例二
+students.sort(key=lambda s: s.score)
 ```
 
 ## 类
@@ -323,7 +328,7 @@ print(dog._Dog__calculate_dog_years())  # 21
 
 ## 模块
 
-模块即一个以 `.py` 为后缀的代码文件，其中可以包括类、函数、变量等任意 Python Object。
+模块，即一个以 `.py` 为后缀的代码文件，其中可以包括类、函数、变量等任意 Python Object。
 
 ### `__all__`
 
@@ -467,6 +472,30 @@ finally:
 - 如果出现 B 错误，则执行 `handle(e)` 函数（针对 B 异常）；
 - 如果没有出现错误，则执行 `else` 后面的逻辑；
 - 无论上述结果如何，都会执行 `finally` 后面的逻辑。
+
+## 断言
+
+在代码编写的过程中，为了快速验证逻辑，我们一般会使用断言语句，即 assert。其基本用法是：
+
+```python
+assert statement, assertion
+```
+
+这里 statement 即为需要验证的逻辑，当 statement 为 True 时程序才会继续执行下面的语句；assertion 即为 statement 为 False 时抛出的 AssertionError 的内容。本质上相当于：
+
+```python
+if not x:
+    raise AssertionError("something error")
+```
+
+不过在生产环境下建议使用：
+
+```python
+if not x:
+    raise ValueError("something error")
+```
+
+因为 Python 在 `-O` 模式下会移除所有 `assert`。
 
 ## 迭代器与生成器
 
