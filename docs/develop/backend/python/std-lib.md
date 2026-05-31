@@ -505,6 +505,83 @@ with open("user_info.jsonl", encoding="utf-8") as f:
 """
 ```
 
+## logging
+
+`logging` 是 Python 标准库提供的日志记录工具，支持日志级别过滤、格式化输出、多种输出目标（控制台、文件等）。
+
+### 基本用法
+
+```python
+import logging
+
+# 配置日志格式和级别
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+logging.debug("调试信息")
+logging.info("一般信息")
+logging.warning("警告信息")
+logging.error("错误信息")
+logging.critical("严重错误信息")
+
+"""输出
+2026-05-31 15:53:06 [INFO] 一般信息
+2026-05-31 15:53:06 [WARNING] 警告信息
+2026-05-31 15:53:06 [ERROR] 错误信息
+2026-05-31 15:53:06 [CRITICAL] 严重错误信息
+"""
+```
+
+日志级别从低到高依次为：`DEBUG` < `INFO` < `WARNING` < `ERROR` < `CRITICAL`。设置 `level=logging.INFO` 后，低于 INFO 级别的日志（如 DEBUG）将不会输出。
+
+### 输出到文件
+
+```python
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("app.log", encoding="utf-8"),
+        logging.StreamHandler(),  # 同时输出到控制台
+    ],
+)
+```
+
+### 模块级 logger
+
+在大型项目中，推荐使用模块级 logger 替代全局 `logging` 对象。好处有两点：
+
+1. 日志溯源：通过 `__name__` 可以将调用模块的路径写入日志，清晰标注日志来源；
+2. 层级配置：logger 按包层级继承，例如设置 `"a"` 的日志级别为 WARNING 后，子模块 `"a.b"` 会自动继承，无需逐个配置。
+3. 日志隔离：直接使用根 logger 会让所有第三方库的日志也受 basicConfig 的影响。
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# 添加 handler（避免重复添加）
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter(
+        "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    ))
+    logger.addHandler(handler)
+
+logger.info("模块日志")
+
+"""输出
+2026-05-31 15:56:03 [INFO] __main__: 模块日志
+"""
+```
+
 ## os
 
 `os` 库是 Python 与操作系统交互的标准库，提供了丰富的文件系统操作和系统级功能。
@@ -534,6 +611,8 @@ print(f"当前目录文件: {files}")
 ```
 
 ### 路径操作
+
+建议使用 [pathlib](#pathlib) 库，而不是 os.path。
 
 ```python
 # 路径拼接（跨平台兼容）
@@ -602,10 +681,12 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-### 执行系统命令
+### 执行命令
+
+建议使用 [subprocess](#subprocess) 库。
 
 ```python
-# 执行系统命令（不推荐，建议使用 subprocess）
+# 执行命令
 os.system('ls -l')
 
 # 获取系统信息

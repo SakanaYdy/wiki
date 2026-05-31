@@ -47,22 +47,28 @@ info = (f"My age is {age:.1f}, "
         f"and you?")  # My age is 18.9, and you?
 # 跨行字符串可以使用小括号包裹
 # :.1f 表示给浮点数四舍五入保留 1 位小数
+
+# 字符串拼接
+# 使用 str 的 join 方法，将迭代器中的 str 拼接为一个完整版的字符串
+# 相较于使用 += 省去了存储中间对象的内存开销，提升了程序的性能
+num = [1314, 520, 601]
+splice_str = "-".join(str(x) for x in num)  # 1314-520-601
 ```
 
-`tuple`:
+`tuple`: [顺序表](../../../ds-and-algo/topic/ds.md#顺序表) 数据结构，数据定义好后无法修改。
 
 ```python
-coordinates = (10, 20)
+coordinates: tuple = (10, 20)
 print(coordinates[0])  # 访问元组的第一个元素
 ```
 
 ### 可变数据类型
 
-`dict`: 键值对数据结构
+`dict`: [哈希表](../../../ds-and-algo/topic/ds.md#哈希表) 数据结构。
 
 ```python
 # 字典创建（可哈希对象才能作为键，不可变数据类型都可以作为字典的键）
-person = {"name": "Alice", "age": 25}
+person: dict[str, str | int] = {"name": "Alice", "age": 25}
 
 # 值修改
 person["age"] = 26
@@ -73,13 +79,28 @@ person["city"] = "New York"
 # 根据键访问值
 print(person["name"])
 print(person.get("name", "")) 更安全的访问方法，当字典不存在时，返回第二个参数，这里是 ""
+
+# 查询是否存在某个键 O(1)
+if "bob" in person:
+    pass
+# 等价于（基本不这么写）
+if "bob" in person.keys():
+    pass
+
+# 查询是否存在某个值 O(n)
+if "bob" in person.values():
+    pass
+
+# 查询是否存在某个键值对 O(1)
+if "bob" in person.items():
+    pass
 ```
 
-`list`: 线性表数据结构
+`list`: 同样是 [顺序表](../../../ds-and-algo/topic/ds.md#顺序表) 数据结构，但是可以修改以及增删内容。
 
 ```python
 # 初始化
-fruits = ["apple", "banana", "cherry"]
+fruits: list[str] = ["apple", "banana", "cherry"]
 
 # 初始化（列表推导式）
 squares = [x**2 for x in range(5)]  # 生成 0 到 4 的平方
@@ -103,10 +124,10 @@ print(fruits[0])
 print(fruits[1:3])
 ```
 
-`set`: 集合数据结构
+`set`: 同样是 [哈希表](../../../ds-and-algo/topic/ds.md#哈希表) 数据结构，可以理解为只保留 key 的 `dict`。
 
 ```python
-colors = {"red", "green", "blue"}
+colors: set[str] = {"red", "green", "blue"}
 colors.add("yellow")  # 添加元素
 colors.remove("green")  # 删除元素
 ```
@@ -262,7 +283,7 @@ Python 中的解包机制让参数传递变得更灵活。解包分成两类：
     > user = User(**data)
     > ```
 
-### lambda
+### `lambda`
 
 `lambda` 函数是一种简洁的匿名函数，适合编写非常简单、一次性的函数逻辑：
 
@@ -419,18 +440,20 @@ print(dog._Dog__calculate_dog_years())  # 21
 
 ## 异常
 
-现实场景下，程序的输入或运行几乎不可能始终正确，为了避免程序在出现异常时直接宕机，程序员需要主动编写代码，来应对可能的异常。基本异常处理逻辑主要分两步：
+现实场景下，程序的输入或运行几乎不可能始终正确，为了避免程序在出现异常时直接宕机，开发人员需要主动编写代码，来应对可能的异常，以确保系统的鲁棒性。
 
-1. 产生异常：Python 使用 `raise` 关键字来产生异常。
-2. 捕获异常：Python 使用 `try`、`except`、`finally` 关键字捕获异常。
+基本异常处理逻辑主要分两步：
+
+1. 抛出异常：Python 使用 `raise` 关键字来抛出异常。
+2. 捕获和处理异常：Python 使用 `try`、`except` 和 `finally` 关键字捕获和处理异常。
 
 在发生 `raise ErrorType()` 后，Python 会做三件事：
 
 1. 构造异常对象；
 2. 停止当前函数的执行；
-3. 基于函数调用栈「逐层向上」查找异常处理器（即 `try, except` 逻辑）。
+3. 基于函数调用栈「逐层向上」查找异常处理器 `try`。
 
-### 产生异常
+### 抛出异常
 
 基本语法：
 
@@ -451,30 +474,39 @@ raise FileNotFoundError("file not found")
 raise ZeroDivisionError("division by zero")
 ```
 
-### 捕获异常
+### 捕获和处理异常
 
-基本语法：
+> [!note] 原则
+>
+> 能在当前层级处理的异常就立刻处理，无法处理的异常就抛出让上层处理。
+
+实际编码过程中，往往需要配合标准库中的 [logging](./std-lib.md#logging) 模块，达到最佳实践：
 
 ```python
+import logging
+
+logger = logging.getLogger(__name__)
+
 try:
+    # 正常业务逻辑
     ...
-except A:
-    ...
-except B as e:
-    ...
-else:
-    ...
+except (
+    TimeoutError,
+    ConnectionError,
+) as e:
+    # 可预见的、可解决的异常，直接重试
+    retry(e)
+except ModuleNotFoundError as e:
+    # 可预见的、无法解决的异常，向上抛出
+    return error_response(e)
+except Exception:
+    # 不可预见的异常，先记录，再抛出
+    logger.exception("unexpected error")  # 记录异常
+    raise  # 向上抛出
 finally:
+    # 无论上述结果如何，都会执行这段逻辑，例如释放资源等
     ...
 ```
-
-其基本逻辑是：
-
-- `try` 后跟随基本业务逻辑；
-- 如果出现 A 错误，则执行 `handle()` 函数（针对任意异常）；
-- 如果出现 B 错误，则执行 `handle(e)` 函数（针对 B 异常）；
-- 如果没有出现错误，则执行 `else` 后面的逻辑；
-- 无论上述结果如何，都会执行 `finally` 后面的逻辑。
 
 ## 断言
 
