@@ -271,6 +271,10 @@ nav = [
     ] },
     { "下游应用" = [
       "llm/downstream/index.md",
+      { "产品形态" = [
+        "llm/downstream/product/index.md",
+        "llm/downstream/product/claude-code.md",
+      ] },
       "llm/downstream/api-provider.md",
       { "智能体" = [
         "llm/downstream/agent/index.md",
