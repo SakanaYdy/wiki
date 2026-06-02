@@ -3,100 +3,108 @@ title: 进程管理
 icon: material/progress-tag
 ---
 
-## 查看进程 ps / top / htop / btop
+## 查看进程 ps
+
+`ps` (process status) 命令用于查看当前系统中的进程信息。
+
+基本命令：
 
 ```bash
-# 静态
+# 查看当前所有进程
 ps
 
-# 动态
+# -e: every process
+# -f: full format
+ps -ef
+```
+
+常用选项：
+
+```bash
+# 查看指定用户的进程
+ps -u <username>
+
+# 查看指定 PID 的进程信息
+ps -p <PID>
+
+# 显示进程树
+ps -ejH
+```
+
+动态查看工具：
+
+```bash
+# 系统自带，默认按 CPU 排序，交互式查看
 top
 
-# 高级工具
+# 增强版 top，支持鼠标操作、垂直滚动和进程树
 htop
 
-# 更高级的工具
+# 更现代的替代品，界面美观，支持 GPU 监控
 btop
 ```
 
-## 搜索进程 lsof
+## 进程与文件 lsof
 
-可以使用 [lsof](https://github.com/lsof-org/lsof) 工具实现。
+[lsof](https://github.com/lsof-org/lsof) (list open files) 可以列出系统中所有打开的文件，常用来定位进程与文件、端口之间的关联。
+
+基本命令：
 
 ```bash
-# 按照端口号查询
+# 查看占用指定端口的进程
 lsof -i :<port>
+
+# 查看指定进程名打开的所有文件
+lsof -c <process_name>
+
+# 查看指定 PID 打开的所有文件
+lsof -p <PID>
 ```
 
 ## 终止进程 kill
 
-如果想要中断一个并行/并发任务，在终端输入 `Ctrl+C` 往往是无效的，因为 `Ctrl+C` 一次只能结束一个进程/线程。我们可以直接用 `taskkill` 或 `pkill` 终止对应程序的所有进程。
+kill 是 Shell 内置的命令，用于控制进程（主要是终止进程）。
+
+基本命令：
 
 ```bash
-# 终止特定 PID 的进程
-kill -9 <process_id>
-
-# 终止所有 Python 进程
-pkill -9 -f python
-
-# 或者使用 killall
-killall -9 python
+kill -<sig_tag> <PID>
 ```
 
-## 练习：进程管理
-
-一、编写一个 shell 程序 `badproc.sh` 使其不断循环
+控制标签有 64 种，可以使用以下命令打印：
 
 ```bash
-#! /bin/bash
-while echo "I'm making files!"
-do
-    mkdir adir
-    cd adir
-    touch afile
-    sleep 10s
-done
+kill -l
+
+# 输出
+
+#  1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP
+#  6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1
+# 11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM
+# 16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP
+# 21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ
+# 26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR
+# 31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3
+# 38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
+# 43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13
+# 48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12
+# 53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7
+# 58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
+# 63) SIGRTMAX-1  64) SIGRTMAX
 ```
 
-![编写 sh 文件](https://cdn.dwj601.cn/images/202410081735300.png)
-
-二、为 `badproc.sh` 增加可执行权限
+常见的 Ctrl+C 
 
 ```bash
-chmod u+x badproc.sh
-```
+# 申请终止
+kill <PID>
 
-![增加可执行权限](https://cdn.dwj601.cn/images/202410081736525.png)
+# Ctrl+C 表示
+kill -2 <PID>
 
-三、在后台执行 `badproc.sh`
-
-```bash
-./badproc.sh &
-```
-
-- `&` 表示后台执行
-
-![后台执行](https://cdn.dwj601.cn/images/202410081737564.png)
-
-四、利用 `ps` 命令查看其进程号
-
-```bash
-ps aux | grep badproc
-```
-
-![查看进程号](https://cdn.dwj601.cn/images/202410081739971.png)
-
-五、利用 `kill` 命令杀死该进程
-
-```bash
+# 最强力的终止
 kill -9 <PID>
 ```
-
-![杀死该进程](https://cdn.dwj601.cn/images/202410081748528.png)
-
-六、删除 `badproc.sh` 程序运行时创建的目录和文件
-
-![删除目录和文件](https://cdn.dwj601.cn/images/202410081748818.png)
 
 ## 调试进程 gdb
 
