@@ -75,7 +75,7 @@ th {
     border-radius: 0.3rem;
     display: block;
     margin: 0 auto;
-    box-shadow: var(--md-shadow-z2);
+    /* box-shadow: var(--md-shadow-z2); */
 }
 
 /* 让图片在暗色模式下不那么刺眼 */
