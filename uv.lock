@@ -114,7 +114,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "zensical", specifier = ">=0.0.42" }]
+requires-dist = [{ name = "zensical", specifier = "==0.0.42" }]
 
 [[package]]
 name = "pygments"
