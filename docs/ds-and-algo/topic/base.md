@@ -762,11 +762,13 @@ print(r)
 
 ## 递归
 
-递归是编程入门的最后一关，也是打开新世界的钥匙。所谓递归，就是让一个函数自己调用自己从而实现一系列诸如：搜索、分治、回溯等算法。
+递归是编程入门的最后一关，也是打开新世界的钥匙。所谓递归，就是让一个函数自己调用自己，从而实现一系列诸如：[搜索](#搜索)、[分治](#分治)、[回溯](#回溯) 等算法。
 
-关于递归函数中调用自己的操作，你可以先不用 care 她到底是怎么执行的，你只需要关心她到底做了什么。比如现在有一个需求，需要封装一个函数 `sum(x)` 返回 $\sum_{i=1}^x,\ (x\ge 1)$ 的计算结果。你完全可以写出下面的程序：
+一个简单的例子，你就能明白递归的定义了。假设现在有一个需求，需要封装一个求和函数 `sum(x)` 返回 $\sum_{i=1}^x,\ (x\ge 1)$ 的计算结果。
 
-```c++
+你完全可以写出下面的程序：
+
+```cpp
 int sum(int x) {
     int ans = 0;
     for (int i = 1; i <= x; i++) {
@@ -776,9 +778,9 @@ int sum(int x) {
 }
 ```
 
-但如果使用递归，就可以不用 `for` 循环，比如下面的程序：
+但如果使用递归，就可以不用 `for` 循环：
 
-```c++
+```cpp
 int sum(int x) {
     if (x == 1) {
         return 1;
@@ -787,63 +789,31 @@ int sum(int x) {
 }
 ```
 
-你不需要关心 `sum(x - 1)` 到底发生了什么，你只需要知道她算出了 $\sum_{i=1}^{x-1}$，那么再加上 $x$ 就是 $\sum_{i=1}^x$，是不是很简单？
+不要在大脑里模拟递归调用，你的大脑承受不了那么多递进关系。你只需要知道 `sum(x - 1)` 算出了 $\sum_{i=1}^{x-1}$，那么再加上 $x$ 就是 $\sum_{i=1}^x$，是不是很简单？
 
-当然，你一定发现了第三行的 `return` 语句，这是为了让函数递归调用自己时有一个终点。**所有的递归函数都有一个终点**，如果递归的终点是可控的，就可以不写 `return` 语句（比如在遍历图时），但上述程序的终点显然是不可控的，因为程序并不知道什么时候不需要再调用 `sum(x - 1)`。
+当然，你一定发现了第三行的 `return` 语句，这是为了让函数递归调用自己时有一个终点，想想也是，如果没有终点，那程序不就会一直调用自己，直到耗尽电脑资源？因此，所有的递归函数都有一个终点，如果递归的终点是可控的，就可以不写 `return` 语句（比如在遍历图时），但上述程序的终点显然是不可控的，因为程序并不知道什么时候不需要再调用 `sum(x - 1)`。
 
-推而广之，所有使用递归思想的算法都有同一套逻辑：
+总结一下，所有使用递归思想的算法都有同一套逻辑：
 
-```c++
-return_type function_name(param) {
+```cpp
+return_type 递归函数入口(当前状态参数) {
     // 1. 递归终点处理逻辑
     // 2. 当前状态处理逻辑
     // 3. 调用自己解决逻辑一致但规模更小的子问题
 }
 ```
 
-现在可以学习使用递归逻辑的一系列算法了。
+### 例：快速排序
 
-### 搜索
-
-所谓搜索，就是在一个「解空间」中通过递归程序将所有可行解搜索出来的算法。这里的解空间可能有些抽象，我们就以一棵根树（可以简单查阅一下 [树](./ds.md#树) 的定义）为例。假设一个问题的解空间就是一棵根树（无环连通图，后用树代称），答案就存在树中的某些结点上。那么我们要做的就是遍历这棵树从而找到所有的可行解。
-
-那么问题来了，怎么遍历？我们知道树有着很多优美的性质，比如以任意一个结点为根都对应了一棵和根树完全一样的结构，而这恰好满足前文所说的「逻辑完全一样但是规模更小」的递归性质。因此遍历一棵树只需要两个逻辑：
-
-1. 遍历当前结点；
-2. 遍历当前结点的所有子结点。
-
-而这，就可以称作搜索。以上述树的搜索为例，就有下面的伪代码：
-
-```c++
-return_type search(int node_index) {
-    // 1. 处理当前结点
-    // 2. 遍历所有子结点
-}
-```
-
-没有返回值？确实。如果我们单纯的遍历一棵树，是不需要返回值的，因为当前结点的所有子结点都遍历结束后，程序就会开始回溯。相比于上面的 `sum(x)` 函数，这里的递归终点是已经存在的。
-
-### 分治
-
-分治是一个很有意思的递归算法，其在上述搜索算法基础之上更进一步。分治算法的核心思想是将原问题转化为多个互不重叠（互斥）的子问题，通过优先求解子问题，来加速原问题的求解 [^adv]。
-
-[^adv]: [Divide-and-conquer algorithm | WIKIPEDIA - (en.wikipedia.org)](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm#Advantages)
-
-分治算法可以总结为以下三个步骤：
-
-1. divide：将原问题问题划分为多个互不重叠的子问题；
-2. conquer：递归处理子问题；
-3. combine：联合子问题的处理结果加速计算原问题的求解。
-
-当然，如果一个问题无法拆分为多个互斥的子问题，分治算法就不适用了，此时可以采用更高效的 [动态规划](./dp.md) 算法来尝试解决。
-
-**快速排序**。这是一种不稳定的排序算法（如果一个排序算法在对所有元素排序后，原来相同关键字的顺序保持不变，则称该排序算法是稳定的，反之就是不稳定的），核心思想就是分治。具体地，以升序为例，如果一个序列是有序的，那么对于该序列中的每一个元素，其左边所有元素都应该比右边所有元素小。基于该先验，我们就有了快速排序算法：
+快速排序是一种不稳定 [^稳定性] 的排序算法，核心思想就是递归。如果一个序列是有序的，那么对于该序列中的每一个元素，其左边所有元素都应该比右边所有元素小/大。基于该先验，快速排序算法就可以归纳为：
 
 1. 选择序列中任意一个元素作为基准；
-2. 基于该基准，扫描一遍序列将比基准小的元素排在基准的左边，比基准大的元素排在基准的右边；
-3. 递归左右两边的序列直到序列只有 1 个元素为止。
+2. 基于该基准，扫描一遍序列将比基准小/大的排在基准的左边，比基准大/小的排在基准的右边；
+3. 递归左右两边的序列。
 
-在计算时间复杂度时，我们可以将分治的逻辑想象成一棵二叉树，对于二叉树的每一层都会有 $O(n)$ 的遍历开销，而二叉树的层数平均有 $O(\log n)$ 层，因此排序的时间复杂度就是 $O(n\log n)$。当然如果每次选择的基准刚好是所在序列的最值，就会导致二叉树的层数退化到 $O(n)$，但一般来说不会这么极端。
+[^稳定性]: 如果排序后相同关键字的元素顺序不变，则称该排序算法是稳定的，反之就是不稳定的。
+
+在计算时间复杂度时，我们可以将递归逻辑想象成一棵二叉树，对于二叉树的每一层都会有 $O(n)$ 的遍历开销，而二叉树的层数平均有 $O(\log n)$ 层，因此排序的时间复杂度就是 $O(n\log n)$。当然如果每次选择的基准刚好是所在序列的最值，就会导致二叉树的层数退化到 $O(n)$，但一般来说不会这么极端。
 
 示例代码：
 
@@ -851,9 +821,10 @@ return_type search(int node_index) {
 vector<int> a = {3, 1, 4, 2, 5};  // 待排序数组
 
 void quick_sort(int l, int r) {
+    // 1. 递归终点处理逻辑
     if (l >= r) return;
 
-    // conquer
+    // 2. 当前状态处理逻辑
     int i = l - 1, j = r + 1, x = a[(l + r) >> 1];
     while (i < j) {
         while (a[++i] < x);
@@ -861,7 +832,7 @@ void quick_sort(int l, int r) {
         if (i < j) swap(a[i], a[j]);
     }
 
-    // divide
+    // 3. 调用自己解决逻辑一致但规模更小的子问题
     quick_sort(l, j);
     quick_sort(j + 1, r);
 }
@@ -869,56 +840,52 @@ void quick_sort(int l, int r) {
 quick_sort(0, a.size() - 1);  // 调用示例
 ```
 
-**归并排序**。这是一种稳定的排序算法，核心思想同样是分治且符合标准的三步分治策略。同样以升序为例，如果两个有序序列都是升序或都是降序，那么可以双指针扫描一遍从而 $O(n)$ 地合并这两个序列为一个有序序列。基于该先验，我们就有了归并排序算法：
+## 搜索
 
-1. 将序列等分为左右两部分；
-2. 分治左右两部分使得左右两部分都是升序或都是降序；
-3. 合并左右两个有序序列。
+所谓搜索，就是在一个「解空间」中将所有可行解搜索出来的算法。为了更形象地理解解空间，我们可以将解空间想象为一棵 [根树](./ds.md#树)（有向无环连通图，后用树代称），答案就存在树中的某些结点上。那么我们要做的就是搜索这棵树从而找到所有的可行解。
 
-时间复杂度的计算与快速排序类似，只不过这里的分治递归二叉树一定是 $O(\log n)$ 层，那么时间复杂度就是稳定的 $O(n \log n)$。
+那么问题来了，怎么搜索？主要有两种方式：
 
-示例代码：
+- 深度优先搜索 (Depth-First Search, DFS)。
+- 广度优先搜索 (Breadth-First Search, BFS)。
 
-```cpp
-vector<int> a = {3, 1, 4, 2, 5};  // 待排序数组
-vector<int> t(a.size(), 0);       // 临时数组
+**深度优先搜索**。对于根树而言，每一棵子树的结构都是一样的，这满足了前文所说的「逻辑一致但规模更小」的递归性质。
 
-void merge_sort(int l, int r) {
-    if (l >= r) return;
+伪代码：
 
-    // divide
-    int mid = (l + r) >> 1;
-
-    // conquer
-    merge_sort(l, mid), merge_sort(mid + 1, r);
-
-    // combine
-    int i = l, j = mid + 1, k = 0;
-    while (i <= mid && j <= r) {
-        if (a[i] < a[j]) t[k++] = a[i++];
-        else t[k++] = a[j++];
-        cnt++;
-    }
-    while (i <= mid) t[k++] = a[i++];
-    while (j <= r) t[k++] = a[j++];
-
-    for (i = l, j = 0; i <= r; i++) a[i] = t[j++];
-};
-
-merge_sort(0, a.size() - 1);  // 调用示例
+```c++
+return_type dfs(int node_index) {
+    // 1. 当前状态处理逻辑：处理当前结点
+    // 2. 调用自己解决逻辑一致但规模更小的子问题：遍历当前结点的所有子结点
+}
 ```
 
-### 回溯
+细心的读者已经发现了，这里没有递归终点处理逻辑，这是由树的存储结构决定的。由于树的结点数量是有限的，并且不存在环路，所以递归调用也是有限的（其实就是树中边的数量），也就不需要额外写递归终点处理逻辑。
 
-回溯算法在上述分治的基础之上更进一步。其实按理来说，递归函数的出栈就是回溯，但是这里介绍的回溯更多侧重于递归函数回溯后返回给当前问题的结果。举个例子，我们看看校长是怎么惩罚翘课学生的：从最高的校长开始，ta 不 care 你上没上课，ta 只需要向各个学院的院长询问情况即可，而各个院长也不 care 你上没上课，ta 们只需要向所有年级的辅导员询问情况即可，而辅导员也不 care 你上没上课，ta 们只需要向所有的任课老师询问情况即可，任课老师上课点名了，你没来？那你有福了，任课老师和辅导员说你没来上课，辅导员和院长说你没来上课，院长和校长说你没来上课，校长知道了，那你彻底凉了（才怪）。
+**广度优先搜索**。除了使用递归策略进行搜索，我们也可以使用 [队列](./ds.md#队列) 从起点开始一层一层向外搜索。
 
-至此一个现实场景中的回溯策略就淋漓尽致地体现出来了。通过将原问题划分为多个不重叠的子问题，按照相同逻辑处理完子问题后，原问题得到了所有子问题的解，基于这些子问题的解就可以得到原问题的解，这就是回溯的思想。
+伪代码：
 
-总结一下。聪明的你一定发现了，搜索、分治和回溯是层层递进的。搜索是正向试探的勇士，不断的寻找可能的结果，分治是懂得偷懒的领导，通过合理分配工作达到最佳办事效率，而回溯则是顾全大局的谋士，基于所有的已知结果做出最终的选择。
+```c++
+return_type bfs() {
+    queue q;
+    q.push(起点);
+    while q is not empty {
+        // 取队头
+        head = q.pop();
+        // 处理当前结点
+        do_something();
+        // 向外搜索一层
+        for neighbour in head.neighbour {
+            q.push(neighbour);
+        }
+    }
+}
+```
 
 ### 例：组合总和
 
-> 经典之处：组合型枚举
+> 经典之处：组合型搜索
 >
 > 难度：CF 1200 *
 >
@@ -990,7 +957,7 @@ merge_sort(0, a.size() - 1);  // 调用示例
 
 ### 例：石头分散的最少移动次数
 
-> 经典之处：排列型枚举
+> 经典之处：排列型搜索
 >
 > 难度：  CF 1400 *
 >
@@ -998,12 +965,9 @@ merge_sort(0, a.size() - 1);  // 调用示例
 
 题意：给定一个 $3\times 3$ 的矩阵 $g$，其中数字总和为 $9$ 且 $g[i][j] \ge 0$，现在需要将其中 $>1$ 的数字沿着直角边移动到值为 $0$ 的位置上使得最终矩阵全为 $1$，输出最小的总移动距离。
 
-思路：
+思路：记 $0$ 为空位，假设有 $k$ 个空位，那么就一定有 $k$ 个 $1$ 可以移动，因此这道题本质上就是 $k$ 个空位与 $k$ 个 $1$ 的匹配问题。为了不漏掉任何一种匹配方式，我们直接全排列枚举空位或者 $1$ 的位置即可，此处我们选择前者。
 
-- 记 $0$ 为空位，假设有 $k$ 个空位，那么就一定有 $k$ 个 $1$ 可以移动，因此这道题本质上就是 $k$ 个空位与 $k$ 个 $1$ 的匹配问题。为了不漏掉任何一种匹配方式，我们直接全排列枚举空位或者 $1$ 的位置即可，此处我们选择前者；
-- Python 和 C++ 都内置了全排列的库函数：
-    - C++ 的全排列枚举库函数为 `std::next_permutation(ItFirst, ItEnd)`，每次返回刚好比当前排列字典序大的排列；
-    - Python 的全排列枚举库函数为 `itertools.permutations(Iterable)`，按照字典序一次性返回所有排列。
+另外，对于全排列问题，也可以使用编程语言自带的 API 实现。
 
 时间复杂度：$O(9\times 9!)$
 
@@ -1043,33 +1007,6 @@ merge_sort(0, a.size() - 1);  // 调用示例
                     vis[j] = False
     
             dfs(0, 0)
-    
-            return ans
-    ```
-
-=== "Python 库函数"
-
-    ```python
-    from itertools import permutations
-    
-    class Solution:
-        def minimumMoves(self, g: List[List[int]]) -> int:
-            a = []
-            b = []
-            for i in range(3):
-                for j in range(3):
-                    if g[i][j] == 0:
-                        a.append((i, j))
-                    elif g[i][j] > 1:
-                        for _ in range(g[i][j] - 1):
-                            b.append((i, j))
-    
-            ans = 1000
-            for p in permutations(a):
-                now = 0
-                for i, (x, y) in enumerate(p):
-                    now += abs(x - b[i][0]) + abs(y - b[i][1])
-                ans = min(ans, now)
     
             return ans
     ```
@@ -1123,7 +1060,39 @@ merge_sort(0, a.size() - 1);  // 调用示例
     };
     ```
 
-=== "C++ 库函数"
+全排列库函数实现：
+
+- C++ 的全排列枚举库函数为 `std::next_permutation(ItFirst, ItEnd)`，每次返回刚好比当前排列字典序大的排列。
+- Python 的全排列枚举库函数为 `itertools.permutations(Iterable)`，按照字典序一次性返回所有排列。
+
+=== "Python"
+
+    ```python
+    from itertools import permutations
+    
+    class Solution:
+        def minimumMoves(self, g: List[List[int]]) -> int:
+            a = []
+            b = []
+            for i in range(3):
+                for j in range(3):
+                    if g[i][j] == 0:
+                        a.append((i, j))
+                    elif g[i][j] > 1:
+                        for _ in range(g[i][j] - 1):
+                            b.append((i, j))
+    
+            ans = 1000
+            for p in permutations(a):
+                now = 0
+                for i, (x, y) in enumerate(p):
+                    now += abs(x - b[i][0]) + abs(y - b[i][1])
+                ans = min(ans, now)
+    
+            return ans
+    ```
+
+=== "C++"
 
     ```c++
     class Solution {
@@ -1156,276 +1125,65 @@ merge_sort(0, a.size() - 1);  // 调用示例
     };
     ```
 
-### 例：扩展字符串
-
-> 经典之处：预处理设置上限 trick
->
-> 难度：CF 1500 *
->
-> OJ：[AcWing](https://www.acwing.com/problem/content/5284/)
-
-题意：给定一种字符串构造方法，进行 $q\ (1\le q\le 10)$ 次查询，每次询问第 $n\ (0\le n\le 10^5)$ 个字符串中第 $k\ (1\le k \le 10^{18})$ 个字符是什么（字符串下标从 $1$ 开始）。如果越界输出 `'.'`。字符串构造方法如下：
-
-- $s_0 = $ `DKER EPH VOS GOLNJ ER RKH HNG OI RKH UOPMGB CPH VOS FSQVB DLMM VOS QETH SQB`；
-- $s_i = $ `DKER EPH VOS GOLNJ UKLMH QHNGLNJ A` $+s_{i−1}+$ `AB CPH VOS FSQVB DLMM VOS QHNG A` $+s_{i−1}+$ `AB`。
-
-思路：
-
-- 可以发现字符串构造方法类似二叉递归的形式，我们预处理每一个状态的字符串长度后直接递归搜索即可；
-- 由于 $n$ 的上限很大，直接存储每一个状态的长度肯定会炸（C++ 炸 long long，Python 会因为高精炸时空）。注意到询问的下标索引不超过 $10^{18}$，因此我们在预处理时给每一个状态的字符串长度设置上限即可。
-
-时间复杂度：$O(qn)$
-
-=== "Python"
-
-    ```python
-    import sys
-    sys.setrecursionlimit(100000)
-    
-    s = "DKER EPH VOS GOLNJ ER RKH HNG OI RKH UOPMGB CPH VOS FSQVB DLMM VOS QETH SQB"
-    t0 = "DKER EPH VOS GOLNJ UKLMH QHNGLNJ A"
-    t1 = "AB CPH VOS FSQVB DLMM VOS QHNG A"
-    t2 = "AB"
-    l0, l1, l2 = len(t0), len(t1), len(t2)
-    
-    a = [0] * 100001
-    a[0] = len(s)
-    for i in range(1, 100001):
-        a[i] = min(2 * 10**18, l0 + l1 + l2 + a[i - 1] * 2)
-    
-    def dfs(n: int, k: int) -> str:
-        if k > a[n]:
-            return '.'
-        if n == 0:
-            return s[k - 1]
-    
-        if k > l0 + a[n - 1] + l1 + a[n - 1]:
-            return t2[k - (l0 + a[n - 1] + l1 + a[n - 1]) - 1]
-        elif k > l0 + a[n - 1] + l1:
-            return dfs(n - 1, k - (l0 + a[n - 1] + l1))
-        elif k > l0 + a[n - 1]:
-            return t1[k - (l0 + a[n - 1]) - 1]
-        elif k > l0:
-            return dfs(n - 1, k - l0)
-    
-        return t0[k - 1]
-    
-    q = int(input())
-    ans = ''
-    for _ in range(q):
-        n, k = map(int, input().strip().split())
-        ans += dfs(n, k)
-    
-    print(ans)
-    ```
-
-=== "C++"
-
-    ```c++
-    #include <iostream>
-    #include <vector>
-    
-    using namespace std;
-    using ll = long long;
-    
-    const int N = 100001;
-    
-    ll a[N];
-    string s = "DKER EPH VOS GOLNJ ER RKH HNG OI RKH UOPMGB CPH VOS FSQVB DLMM VOS QETH SQB";
-    string t0 = "DKER EPH VOS GOLNJ UKLMH QHNGLNJ A";
-    string t1 = "AB CPH VOS FSQVB DLMM VOS QHNG A";
-    string t2 = "AB";
-    int l0 = t0.size();
-    int l1 = t1.size();
-    int l2 = t2.size();
-    
-    char dfs(int n, ll k) {
-        if (k > a[n]) {
-            return '.';
-        }
-        if (n == 0) {
-            return s[k - 1];
-        }
-    
-        if (k > l0 + a[n - 1] + l1 + a[n - 1]) {
-            return t2[k - (l0 + a[n - 1] + l1 + a[n - 1]) - 1];
-        } else if (k > l0 + a[n - 1] + l1) {
-            return dfs(n - 1, k - (l0 + a[n - 1] + l1));
-        } else if (k > l0 + a[n - 1]) {
-            return t1[k - (l0 + a[n - 1]) - 1];
-        } else if (k > l0) {
-            return dfs(n - 1, k - l0);
-        } else {
-            return t0[k - 1];
-        }
-    }
-    
-    int main() {
-        a[0] = s.size();
-        for (int i = 1; i < N; i++) {
-            a[i] = min((ll)2E18, l0 + l1 + l2 + a[i - 1] * 2);
-        }
-    
-        int q;
-        cin >> q;
-    
-        string ans = "";
-        while (q--) {
-            int n;
-            ll k;
-            cin >> n >> k;
-            ans += dfs(n, k);
-        }
-    
-        cout << ans << "\n";
-    
-        return 0;
-    }
-    ```
-
 ### 例：01 迷宫
 
-> 经典之处：连通分量板子题
+> 经典之处：网格图连通分量板子题
 >
 > 难度：洛谷 黄
 >
 > OJ：[洛谷](https://www.luogu.com.cn/problem/P1141)
 
-题意：给定一个 $n\times n\ (1\le n\le 1000)$ 的 01 方阵，询问 $m\ (1\le m\le 10^5)$ 次，每次询问从 $i,j\ (1\le i,j\le n)$ 出发可以移动多少格。移动规则为：可以走到曼哈顿距离为 $1$ 且与当前数值不同的四个格子中。
+题意：给定一个 $n\times n\ (1\le n\le 1000)$ 的 $01$ 方阵，问从 $i,j\ (1\le i,j\le n)$ 出发可以移动多少格，询问 $m\ (1\le m\le 10^5)$ 次。移动规则为：可以走到曼哈顿距离 [^mhd-dist] 为 $1$ 且与当前数值不同的格子中。
 
-思路：
+[^mhd-dist]: 在标准坐标系上，两个点在各坐标轴上的绝对轴距总和。
 
-- 一道入门级网格图遍历问题，放在这主要是为了熟悉连通分量的概念以及 DFS、BFS 和 DSU 在这类问题上的板子写法；
-- 回到本题，显然不可能问一次遍历一次，考虑预处理。预处理就直接遍历网格图同时标记每一个连通分量的大小即可。这里有一个遍历的小 trick，在遍历时保留走过的路径，遍历结束后给走过的路径全都赋上连通分量的大小即可，即二次遍历；
-- 本题也可以用 [并查集](./ds.md#并查集) 实现，通过给每一个结点添加一个「大小域」来维护每一个结点所在连通分量的结点个数，相较于上述二次遍历策略，时间上的常数会小一点。
+思路：显然不可能问一次移动一次，考虑预处理。我们可以提前维护每一个位置可以移动的距离，显然，如果两个位置可达，那么这两个位置可以移动的距离一定是相同的。基于该先验，我们可以直接搜索网格图并统计每一个连通分量的大小，然后再遍历一遍连通分量给每个位置都存好该连通分量的大小。后续处理查询时，直接 $O(1)$ 取出该位置的连通分量大小即可。
 
 时间复杂度：$O(n^2)$
 
-=== "Python BFS"
+DFS：
+
+=== "Python"
 
     ```python
-    from collections import deque
-    
+    import sys
+
+    sys.setrecursionlimit(10000)
+
     n, m = map(int, input().strip().split())
-    g = [""] * n
-    for i in range(n):
-        g[i] = input().strip()
-    
-    ans = [[0] * n for _ in range(n)]
+    g = [input().strip() for _ in range(n)]
+
+    # 维护连通分量的大小 O(n*n)
+    ans = [[-1] * n for _ in range(n)]
+    dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
     vis = [[False] * n for _ in range(n)]
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, 1, -1]
-    
-    def bfs(i: int, j: int) -> None:
-        cnt = 0
-        path = []
-        q = deque()
-    
-        cnt += 1
-        path.append((i, j))
+
+    def dfs(i: int, j: int) -> list[tuple[int, int]]:
+        path: list[tuple[int, int]] = [(i, j)]
         vis[i][j] = True
-        q.append((i, j))
-        while q:
-            x, y = q.popleft()
-            for k in range(4):
-                nx, ny = dx[k] + x, dy[k] + y
-                if nx < 0 or nx >= n or ny < 0 or ny >= n:
-                    continue
-                if vis[nx][ny] or int(g[x][y]) ^ int(g[nx][ny]) == 0:
-                    continue
-                cnt += 1
-                path.append((nx, ny))
-                vis[nx][ny] = True
-                q.append((nx, ny))
-    
-        for x, y in path:
-            ans[x][y] = cnt
-    
+        for k in range(4):
+            ni = i + dx[k]
+            nj = j + dy[k]
+            if ni < 0 or ni >= n or nj < 0 or nj >= n or (g[i][j] == g[ni][nj]) or vis[ni][nj]:
+                continue
+            path.extend(dfs(ni, nj))
+        return path
+
     for i in range(n):
         for j in range(n):
-            if not vis[i][j]:
-                bfs(i, j)
-    
+            if vis[i][j]:
+                continue
+            path = dfs(i, j)
+            for x, y in path:
+                ans[x][y] = len(path)
+
+    # 处理查询 O(m)
     for _ in range(m):
         i, j = map(int, input().strip().split())
         print(ans[i - 1][j - 1])
     ```
 
-=== "Python DSU"
-
-    ```python
-    from collections import deque
-    
-    class DSU:
-        def __init__(self, n: int) -> None:
-            self.n = n
-            self.sz = n
-            self.p = [i for i in range(n)]
-            self.cnt = [1 for i in range(n)]
-    
-        def find(self, x: int) -> int:
-            if self.p[x] != x:
-                self.p[x] = self.find(self.p[x])
-            return self.p[x]
-    
-        def merge(self, a: int, b: int) -> None:
-            pa, pb = self.find(a), self.find(b)
-            if pa != pb:
-                self.p[pa] = pb
-                self.cnt[pb] += self.cnt[pa]
-                self.sz -= 1
-    
-        def same(self, a: int, b: int) -> bool:
-            return self.find(a) == self.find(b)
-    
-        def size(self) -> int:
-            return self.sz
-    
-        def size(self, a: int) -> int:
-            return self.cnt[self.find(a)]
-    
-    n, m = map(int, input().strip().split())
-    g = [""] * n
-    for i in range(n):
-        g[i] = input().strip()
-    
-    dsu = DSU(n * n)
-    vis = [[False] * n for _ in range(n)]
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, 1, -1]
-    
-    def bfs(i: int, j: int) -> None:
-        q = deque()
-        vis[i][j] = True
-        q.append((i, j))
-        
-        while q:
-            x, y = q.popleft()
-            for k in range(4):
-                nx, ny = dx[k] + x, dy[k] + y
-                if nx < 0 or nx >= n or ny < 0 or ny >= n:
-                    continue
-                if vis[nx][ny] or int(g[x][y]) ^ int(g[nx][ny]) == 0:
-                    continue
-                
-                dsu.merge(x * n + y, nx * n + ny)
-                
-                vis[nx][ny] = True
-                q.append((nx, ny))
-    
-    for i in range(n):
-        for j in range(n):
-            if not vis[i][j]:
-                bfs(i, j)
-    
-    for _ in range(m):
-        i, j = map(int, input().strip().split())
-        i -= 1
-        j -= 1
-        print(dsu.size(i * n + j))
-    ```
-
-=== "C++ DFS"
+=== "C++"
 
     ```c++
     #include <iostream>
@@ -1488,9 +1246,184 @@ merge_sort(0, a.size() - 1);  // 调用示例
     }
     ```
 
+BFS：
+
+=== "Python"
+
+    ```python
+    from collections import deque
+    
+    n, m = map(int, input().strip().split())
+    g = [""] * n
+    for i in range(n):
+        g[i] = input().strip()
+    
+    ans = [[0] * n for _ in range(n)]
+    vis = [[False] * n for _ in range(n)]
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, 1, -1]
+    
+    def bfs(i: int, j: int) -> None:
+        cnt = 0
+        path = []
+        q = deque()
+    
+        cnt += 1
+        path.append((i, j))
+        vis[i][j] = True
+        q.append((i, j))
+        while q:
+            x, y = q.popleft()
+            for k in range(4):
+                nx, ny = dx[k] + x, dy[k] + y
+                if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                    continue
+                if vis[nx][ny] or int(g[x][y]) ^ int(g[nx][ny]) == 0:
+                    continue
+                cnt += 1
+                path.append((nx, ny))
+                vis[nx][ny] = True
+                q.append((nx, ny))
+    
+        for x, y in path:
+            ans[x][y] = cnt
+    
+    for i in range(n):
+        for j in range(n):
+            if not vis[i][j]:
+                bfs(i, j)
+    
+    for _ in range(m):
+        i, j = map(int, input().strip().split())
+        print(ans[i - 1][j - 1])
+    ```
+
+=== "C++"
+
+    ```c++
+    #include <iostream>
+    #include <queue>
+    #include <vector>
+    using namespace std;
+
+    const int N = 1010;
+
+    int n, m;
+    string g[N];
+    int ans[N][N];
+    bool vis[N][N];
+    int dx[4] = {-1, 1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+
+    void bfs(int si, int sj) {
+        vector<pair<int, int>> path;
+        queue<pair<int, int>> q;
+
+        q.push({si, sj});
+        path.push_back({si, sj});
+        vis[si][sj] = true;
+        while (q.size()) {
+            auto [i, j] = q.front();
+            q.pop();
+            for (int k = 0; k < 4; k++) {
+                int ni = i + dx[k];
+                int nj = j + dy[k];
+                if (ni < 0 || ni >= n || nj < 0 || nj >= n || vis[ni][nj] || g[ni][nj] == g[i][j]) {
+                    continue;
+                }
+                q.push({ni, nj});
+                path.push_back({ni, nj});
+                vis[ni][nj] = true;
+            }
+        }
+
+        for (auto& [x, y]: path) {
+            ans[x][y] = path.size();
+        }
+    }
+
+    int main() {
+        cin >> n >> m;
+        for (int i = 0; i < n; i++) {
+            cin >> g[i];
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!vis[i][j]) {
+                    bfs(i, j);
+                }
+            }
+        }
+
+        while (m--) {
+            int x, y;
+            cin >> x >> y;
+            cout << ans[x - 1][y - 1] << "\n";
+        }
+
+        return 0;
+    }
+    ```
+
+另外，如果觉得二次遍历不够优雅，也可以用 [并查集](./ds.md#并查集) 来维护每一个连通分量（代码中的 `path` 变量）的大小，时间常数会小一点。考虑到这是数据结构部分的内容，就不在这里展开了。只要读者理解了并查集的内容，移植到本题应当是比较容易的。
+
 同类题推荐：
 
-- [登山 | 第 16 届蓝桥杯 Python A 组倒数第二题](../lan-qiao-cup/16th-python-a.md#t7-登山-2020)
+- [登山 | 第 16 届蓝桥杯 Python A 组省赛倒数第二题](../lan-qiao-cup/16th-python-a.md#t7-登山-2020)
+
+## 分治
+
+[分治](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm#Advantages) 算法在 [搜索](#搜索) 算法基础之上更进一步，将原问题转化为多个互不重叠的子问题，通过优先求解子问题，来加速原问题的求解。分治算法可以总结为以下三个步骤：
+
+1. 划分 (divide)：将原问题问题划分为多个互不重叠的子问题；
+2. 治理 (conquer)：递归处理子问题；
+3. 合并 (combine)：联合子问题的处理结果加速求解原问题。
+
+> [!note]
+>
+> 如果一个问题无法划分为多个互不重叠的子问题，分治算法就不适用了，此时可以尝试使用 [动态规划](./dp.md) 算法来解决。
+
+### 例：归并排序
+
+归并排序是一种稳定 [^稳定性] 的排序算法，其核心思想就是分治。如果两个有序序列都是升序或降序，那么可以双指针扫描一遍从而 $O(n)$ 地将这两个序列合并为一个有序序列。因此归并排序算法可以归纳为：
+
+1. 将序列等分为左右两部分；
+2. 分治左右两部分使得左右两部分都是升序或降序；
+3. 合并左右两个有序序列。
+
+时间复杂度的计算与 [快速排序](#例快速排序) 类似，只不过这里的分治递归二叉树一定是 $O(\log n)$ 层，那么时间复杂度就是稳定的 $O(n \log n)$。
+
+示例代码：
+
+```cpp
+vector<int> a = {3, 1, 4, 2, 5};  // 待排序数组
+vector<int> t(a.size(), 0);       // 临时数组
+
+void merge_sort(int l, int r) {
+    if (l >= r) return;
+
+    // divide
+    int mid = (l + r) >> 1;
+
+    // conquer
+    merge_sort(l, mid), merge_sort(mid + 1, r);
+
+    // combine
+    int i = l, j = mid + 1, k = 0;
+    while (i <= mid && j <= r) {
+        if (a[i] < a[j]) t[k++] = a[i++];
+        else t[k++] = a[j++];
+        cnt++;
+    }
+    while (i <= mid) t[k++] = a[i++];
+    while (j <= r) t[k++] = a[j++];
+
+    for (i = l, j = 0; i <= r; i++) a[i] = t[j++];
+};
+
+merge_sort(0, a.size() - 1);  // 调用示例
+```
 
 ### 例：随机排列
 
@@ -1621,3 +1554,13 @@ merge_sort(0, a.size() - 1);  // 调用示例
         return 0;
     }
     ```
+
+## 回溯
+
+回溯算法在 [分治](#分治) 算法的基础之上更进一步。其实按理来说，递归函数的出栈就是回溯，但是这里介绍的回溯更侧重于递归函数「将给当前问题的解集返回给上层调用它的函数」这个行为。
+
+举个例子，我们看看校长是怎么惩罚翘课学生的：从最高的校长开始，ta 不 care 你上没上课，ta 只需要向各个学院的院长询问情况即可，而各个院长也不 care 你上没上课，ta 们只需要向所有年级的辅导员询问情况即可，而辅导员也不 care 你上没上课，ta 们只需要向所有的任课老师询问情况即可，任课老师上课点名了，你没来？那你有福了，任课老师和辅导员说你没来上课，辅导员和院长说你没来上课，院长和校长说你没来上课，校长知道了，那你彻底凉了（才怪）。
+
+至此一个现实场景中的回溯策略就淋漓尽致地体现出来了。通过将原问题划分为多个不重叠的子问题，按照相同逻辑处理完子问题后，原问题得到了所有子问题的解，基于这些子问题的解就可以得到原问题的解，这就是回溯的核心思想。
+
+聪明的你一定发现了，搜索、分治和回溯是层层递进的。搜索是正向试探的勇士，不断寻找可能的结果，分治是懂得偷懒的领导，通过合理分配工作达到最佳办事效率，而回溯则是顾全大局的谋士，基于所有的已知结果做出最终的选择。
