@@ -348,13 +348,6 @@ toggle.icon = "lucide/moon-star"
 toggle.name = "切换到自动模式"
 
 # ==============================
-# Link Validator
-# ==============================
-
-[project.validation]
-unresolved_references = false
-
-# ==============================
 # Plugin
 # ==============================
 
