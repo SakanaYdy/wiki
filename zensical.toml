@@ -375,17 +375,12 @@ todo = "TODO"
 [[project.extra.social]]
 icon = "lucide/radio-tower"
 link = "https://stats.uptimerobot.com/uDFPc6P9Xc/802518309"
-name = "Status"
-
-[[project.extra.social]]
-icon = "lucide/clover"
-link = "https://blog.dwj601.cn/"
-name = "Blog"
+name = "站点状态"
 
 [[project.extra.social]]
 icon = "lucide/lightbulb"
 link = "https://www.dwj601.cn/"
-name = "Homepage"
+name = "站长主页"
 
 # ==============================
 # Markdown Extension
@@ -414,9 +409,10 @@ generic = true
 emoji_generator = "zensical.extensions.emoji.to_svg"
 emoji_index = "zensical.extensions.emoji.twemoji"
 [project.markdown_extensions.pymdownx.highlight]
-auto_title = true
+# auto_title = true
 use_pygments = true
 pygments_lang_class = true
+# linenums = true
 anchor_linenums = true
 line_spans = "__span"
 [project.markdown_extensions.pymdownx.inlinehilite]
