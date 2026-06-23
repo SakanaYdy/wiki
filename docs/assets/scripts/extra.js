@@ -117,22 +117,22 @@ document$.subscribe(() => {
         const block = document.createElement("div");
         block.className = "toc-above-block";
         block.innerHTML = `
-            <button class="toc-above-block__close" aria-label="关闭">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-                    <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <p>📣活动</p>
-            <p>1.
-                <a target="_blank" href="https://api.clearouter.top/sign-up?aff=baRR" style="color: #a970ff;">
-                    飞由智能注册送 5$ 额度，适用于 GPT、Gemini 等顶级 AI 模型
+            <div class="toc-above-block__header">
+                <p class="toc-above-block__title">📣 活动</p>
+                <button class="toc-above-block__close" aria-label="关闭">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="toc-above-block__ads">
+                <a class="toc-above-block__ad" target="_blank" rel="noopener" href="https://api.clearouter.top/sign-up?aff=baRR">
+                    <span style="color: #a970ff;">飞由智能注册送 5 刀额度，适用于 GPT-5.5 等顶级模型</span>
                 </a>
-            </p>
-            <p>2.
-                <a target="_blank" href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57" style="color: orange;">
-                    阿里云服务器 68 元一年
+                <a class="toc-above-block__ad" target="_blank" rel="noopener" href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57">
+                    <span style="color: orange;">阿里云服务器 68 元一年</span>
                 </a>
-            </p>
+            </div>
         `;
         // 插入内容块
         toc.parentNode.insertBefore(block, toc);
