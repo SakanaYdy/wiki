@@ -124,18 +124,13 @@ document$.subscribe(() => {
             </button>
             <p>📣活动</p>
             <p>1.
-                <a target="_blank" href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57" style="color: orange;">
-                    阿里云服务器 68 元一年
+                <a target="_blank" href="https://api.clearouter.top/sign-up?aff=baRR" style="color: #a970ff;">
+                    飞由智能注册送 5$ 额度，适用于 GPT、Gemini 等顶级 AI 模型
                 </a>
             </p>
             <p>2.
-                <a target="_blank" href="https://www.aliyun.com/minisite/goods?userCode=jpec1z57" style="color: orange;">
-                    阿里云 9 折商品链接
-                </a>
-            </p>
-            <p>3.
-                <a target="_blank" href="https://s.qiniu.com/IJNj2u" style="color: lightblue;">
-                    七牛云 AI token 免费送
+                <a target="_blank" href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57" style="color: orange;">
+                    阿里云服务器 68 元一年
                 </a>
             </p>
         `;
