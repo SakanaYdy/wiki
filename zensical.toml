@@ -274,6 +274,8 @@ nav = [
       { "产品形态" = [
         "llm/downstream/product/index.md",
         "llm/downstream/product/claude-code.md",
+        "llm/downstream/product/codex.md",
+        "llm/downstream/product/opencode.md",
       ] },
       "llm/downstream/api-provider.md",
       { "智能体" = [
