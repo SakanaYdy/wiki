@@ -101,55 +101,50 @@ th {
 
 
 /* ==================== 广告 ==================== */
-.toc-above-block {
-    margin-bottom: 0.8rem;
-    padding: 0.85rem;
+.ads {
+    margin: 0.2rem;
+    padding: 0.5rem;
     border: 1px solid var(--md-default-fg-color--lightest);
     border-radius: 0.3rem;
     background: var(--md-default-bg-color);
-    color: var(--md-default-fg-color--light);
 }
 
-.toc-above-block__header {
+.ads.ads-visible {
+    display: block;
+}
+
+.ads-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
+    font-size: 0.8rem;
     margin-bottom: 0.65rem;
 }
 
-.toc-above-block__title {
+.ads-title {
     margin: 0;
-    color: var(--md-default-fg-color);
-    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    color: var(--md-default-fg-color);
 }
 
-.toc-above-block__close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+.ads-close {
+    border: 0;
     padding: 0;
-    border: none;
-    background: none;
+    background: transparent;
     color: var(--md-default-fg-color--light);
     cursor: pointer;
-    opacity: 0.6;
+    font: inherit;
+    line-height: 1;
 }
 
-.toc-above-block__close:hover {
-    opacity: 1;
-}
-
-.toc-above-block__ads {
+.ads-list {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.3rem;
+    font-size: 0.7rem;
 }
 
-.toc-above-block__ad {
+.ads-item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,10 +155,11 @@ th {
     background: var(--md-default-bg-color);
     font-size: 0.7rem;
     font-weight: 500;
-    /* line-height: 1.35; */
+    color: var(--ads-color, var(--md-accent-fg-color));
+    line-height: 1.5;
 }
 
-.toc-above-block__ad:hover {
+.ads-item:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01));
 }
 

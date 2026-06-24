@@ -1,0 +1,24 @@
+{% set ads = config.extra.ads %}
+
+{% if ads and ads.enabled and ads.items and not (page and page.meta and page.meta.hide_ads) %}
+<aside class="ads" data-closable="{{ ads.closable | default(true) | lower }}" data-close-expires-hours="{{ ads.close_expires_hours | default(0) }}">
+    <div class="ads-header">
+        <p class="ads-title">{{ ads.title}}</p>
+
+        {% if ads.closable | default(true) %}
+        <button class="ads-close" type="button" aria-label="关闭广告">
+            ×
+        </button>
+        {% endif %}
+    </div>
+
+    <div class="ads-list">
+        {% for ad in ads.items %}
+        <a class="ads-item" href="{{ ad.href }}" target="_blank" rel="sponsored noopener" {% if ad.color
+            %}style="--ads-color: {{ ad.color }};" {% endif %}>
+            {{ ad.text }}
+        </a>
+        {% endfor %}
+    </div>
+</aside>
+{% endif %}
