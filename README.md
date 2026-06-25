@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <b>一个围绕计算机与人工智能的知识库</b>
+    <b>斟知 &middot 一个围绕计算机与人工智能的知识库</b>
 </p>
 
 <p align="center">
