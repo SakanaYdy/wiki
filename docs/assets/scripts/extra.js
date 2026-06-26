@@ -99,55 +99,54 @@ document$.subscribe(({ body }) => {
 })
 
 /**
- * 在文章标题 TOC 上方自定义内容块
+ * ToC 上方注入广告
  */
 document$.subscribe(() => {
-    const page_key = location.pathname;
+    const ads = document.querySelector(".ads");
 
-    // 若当前页面已关闭内容块，则不再渲染
-    if (sessionStorage.getItem(page_key)) return;
+    if (!ads) {
+        return;
+    }
 
-    // 将内容快插入到右侧文章标题 TOC 的上方
-    const sidebar = document.querySelector(".md-sidebar--secondary");
-    if (sidebar) {
-        const toc = sidebar.querySelector(".md-nav--secondary");
-        if (!toc) return;
+    const key = `ads:hidden:${location.pathname}`;
+    const closable = ads.dataset.closable === "true";
+    const closeExpiresHours = Number(ads.dataset.closeExpiresHours || "0");
 
-        // 创建内容块
-        const block = document.createElement("div");
-        block.className = "toc-above-block";
-        block.innerHTML = `
-            <button class="toc-above-block__close" aria-label="关闭">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-                    <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <p>📣活动</p>
-            <p>1.
-                <a target="_blank" href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57" style="color: orange;">
-                    阿里云服务器 68 元一年
-                </a>
-            </p>
-            <p>2.
-                <a target="_blank" href="https://www.aliyun.com/minisite/goods?userCode=jpec1z57" style="color: orange;">
-                    阿里云 9 折商品链接
-                </a>
-            </p>
-            <p>3.
-                <a target="_blank" href="https://s.qiniu.com/IJNj2u" style="color: lightblue;">
-                    七牛云 AI token 免费送
-                </a>
-            </p>
-        `;
-        // 插入内容块
-        toc.parentNode.insertBefore(block, toc);
-        // 监听内容块关闭事件
-        block.querySelector(".toc-above-block__close").addEventListener("click", () => {
-            block.remove();
-            sessionStorage.setItem(page_key, "1");
-        });
-    };
-})
+    if (!closable) {
+        sessionStorage.removeItem(key);
+        localStorage.removeItem(key);
+        ads.classList.add("ads-visible");
+        return;
+    }
+
+    const hiddenUntil = Number(localStorage.getItem(key) || "0");
+
+    if (closeExpiresHours > 0 && hiddenUntil > Date.now()) {
+        ads.remove();
+        return;
+    }
+
+    if (closeExpiresHours <= 0 && sessionStorage.getItem(key) === "1") {
+        ads.remove();
+        return;
+    }
+
+    localStorage.removeItem(key);
+    ads.classList.add("ads-visible");
+
+    const close = ads.querySelector(".ads-close");
+
+    close?.addEventListener("click", () => {
+        ads.classList.remove("ads-visible");
+        ads.remove();
+
+        if (closeExpiresHours > 0) {
+            localStorage.setItem(key, String(Date.now() + closeExpiresHours * 60 * 60 * 1000));
+        } else {
+            sessionStorage.setItem(key, "1");
+        }
+    });
+});
 
 /**
  * 侧边栏滚动条：滚动后自动隐藏

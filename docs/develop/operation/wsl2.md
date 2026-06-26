@@ -89,6 +89,24 @@ defaultVhdSize=32GB
 
 配置前需要关闭所有实例，重启后生效。
 
+> [!tip] 关于硬盘大小
+>
+> 安装在 WSL 中的所有 Linux 实例共享除了硬盘大小以外的所有配置。硬盘大小可以后续单独扩容，例如，从 32 GB 扩容到 64 GB：
+>
+> ```bash
+> # 关闭 wsl
+> wsl --shutdown
+> 
+> # 扩容 wsl
+> wsl --manage <distri_name> --resize 64GB
+> 
+> # 重启发行版
+> wsl -d <distri_name>
+> 
+> # 查看硬盘大小是否变化
+> df -h
+> ```
+
 ### 卸载 WSL
 
 ```bash
@@ -244,7 +262,7 @@ passwd <用户名>
 
 ### Linux 访问 Windows 文件
 
-Windows 磁盘被挂载在 `/mnt` 目录下：
+Windows 硬盘被挂载在 `/mnt` 目录下：
 
 ```bash
 # 访问 C 盘

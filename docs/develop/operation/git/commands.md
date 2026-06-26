@@ -64,6 +64,16 @@ git config --unset https.proxy
 git config --global core.quotepath false
 ```
 
+### 配置默认分支名
+
+```bash
+# 查看默认分支名
+git config --global --get init.defaultBranch
+
+# 修改默认分支名
+git config --global init.defaultBranch <defalut_branch_name>
+```
+
 ## 迭代
 
 项目开发并非一蹴而就，需要迭代式推进。首先需要一个初始迭代场景，主要有以下两种：

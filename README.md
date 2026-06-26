@@ -3,16 +3,16 @@
 </p>
 
 <p align="center">
-  <a title="GitHub Stars" href="https://github.com/Explorer-Dong/wiki/stargazers" target="_blank"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Explorer-Dong/wiki?style=flat&label=GitHub%20Stars"></a>
+  <a title="GitHub Stars" href="https://github.com/Explorer-Dong/open-csai-wiki/stargazers" target="_blank"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Explorer-Dong/open-csai-wiki?style=flat&label=GitHub%20Stars"></a>
   <a title="Python Version" href="https://python.org" target="_blank"><img src="https://img.shields.io/badge/Python-3.13+-aff" alt="Python Version"></a>
-  <a title="Zensical Version" href="https://github.com/zensical/zensical" target="_blank"><img src="https://img.shields.io/badge/Zensical-0.0.41+-gold" alt="Mkdocs Material"></a>
-  <a title="Ask DeepWiki" href="https://deepwiki.com/Explorer-Dong/wiki" target="_blank"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
-  <a title="GitHub Actions Workflow Status" href="https://github.com/Explorer-Dong/wiki/actions/workflows/deploy_document.yml" target="_blank"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Explorer-Dong/wiki/deploy_document.yml?label=Deploy"></a>
-  <a title="License" href="https://github.com/Explorer-Dong/wiki/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/Explorer-Dong/wiki.svg?style=flat&label=License" alt="License"></a>
+  <a title="Zensical Version" href="https://github.com/zensical/zensical" target="_blank"><img src="https://img.shields.io/badge/Zensical-0.0.46+-gold" alt="Zensical Version"></a>
+  <a title="Ask DeepWiki" href="https://deepwiki.com/Explorer-Dong/open-csai-wiki" target="_blank"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+  <a title="GitHub Actions Workflow Status" href="https://github.com/Explorer-Dong/open-csai-wiki/actions/workflows/deploy_document.yml" target="_blank"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Explorer-Dong/open-csai-wiki/deploy_document.yml?label=Deploy"></a>
+  <a title="License" href="https://github.com/Explorer-Dong/open-csai-wiki/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/Explorer-Dong/open-csai-wiki.svg?style=flat&label=License" alt="License"></a>
 </p>
 
 <p align="center">
-    <b>一个围绕计算机与人工智能的知识库</b>
+    <b>斟知 &middot 一个围绕计算机与人工智能的知识库</b>
 </p>
 
 <p align="center">
@@ -30,20 +30,20 @@
 
 ## 参与贡献
 
-碍于笔者认知，博客内容难免有些偏差。如果您在阅读的过程中遇到了困惑，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](https://wiki.dwj601.cn/contributing/) 作进一步了解。下图是本项目的协作者：
+碍于笔者认知，知识库内容难免有些偏差或不足。如果您在阅读的过程中遇到了困惑，或者希望完善知识库，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](https://wiki.dwj601.cn/contributing/) 作进一步了解。下图是本项目的协作者：
 
-<a href="https://github.com/Explorer-Dong/wiki/graphs/contributors">
-  <img src="https://stg.contrib.rocks/image?repo=Explorer-Dong/wiki" alt="Project Collaborators" />
+<a href="https://github.com/Explorer-Dong/open-csai-wiki/graphs/contributors">
+  <img src="https://stg.contrib.rocks/image?repo=Explorer-Dong/open-csai-wiki" alt="Project Collaborators" />
 </a>
 
 ## 星标历史
 
-如果觉得网站的内容对您有帮助，欢迎为项目点一颗 ⭐！下图是本项目的星标历史：
+如果觉得网站的内容对您有帮助，欢迎为项目点一颗⭐！下图是本项目的星标历史：
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&theme=dark&legend=bottom-right" />
-  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&legend=bottom-right" />
-  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&legend=bottom-right" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&theme=dark&legend=bottom-right" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&legend=bottom-right" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&legend=bottom-right" />
 </picture>
 
 ## 开源协议

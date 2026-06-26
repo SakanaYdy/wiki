@@ -1,10 +1,10 @@
 [project]
-site_name = "Open CS/AI Wiki"
+site_name = "斟知"
 site_url = "https://wiki.dwj601.cn/"
-repo_url = "https://github.com/Explorer-Dong/wiki"
-repo_name = "Explorer-Dong/wiki"
+repo_url = "https://github.com/Explorer-Dong/open-csai-wiki"
+repo_name = "Open CS/AI Wiki"
 edit_uri = "edit/main/docs/"
-copyright = "&copy; 2026 Vincent"
+copyright = "&copy; 2026 Open CS/AI Wiki Team."
 extra_javascript = [
   "https://registry.npmmirror.com/katex/0.16.21/files/dist/katex.min.js",
   "https://registry.npmmirror.com/katex/0.16.21/files/dist/contrib/auto-render.min.js",
@@ -140,6 +140,7 @@ nav = [
         "base/others/english-grammar/word-property.md",
         "base/others/english-grammar/sentence-ingredient.md",
         "base/others/english-grammar/sentence-type.md",
+        "base/others/english-grammar/compound-adjective.md",
       ] },
     ] },
   ] },
@@ -191,9 +192,6 @@ nav = [
         "develop/backend/python/async-lib.md",
         "develop/backend/python/network-lib.md",
         "develop/backend/python/dbms-lib.md",
-        "develop/backend/python/compute-lib.md",
-        "develop/backend/python/data-analyze-lib.md",
-        "develop/backend/python/visual-lib.md",
       ] },
     ] },
     { "运维" = [
@@ -252,7 +250,14 @@ nav = [
       "llm/infra/index.md",
       "llm/infra/accelerator.md",
       "llm/infra/huggingface.md",
-      "llm/infra/pytorch.md",
+      { "Python AI" = [
+        "llm/infra/python-ai/index.md",
+        "llm/infra/python-ai/compute-lib.md",
+        "llm/infra/python-ai/data-analyze-lib.md",
+        "llm/infra/python-ai/visual-lib.md",
+        "llm/infra/python-ai/progress-bar-lib.md",
+        "llm/infra/python-ai/neural-network-lib.md",
+      ] },
       "llm/infra/serving-framework.md",
     ] },
     { "模型原理" = [
@@ -266,6 +271,12 @@ nav = [
     ] },
     { "下游应用" = [
       "llm/downstream/index.md",
+      { "产品形态" = [
+        "llm/downstream/product/index.md",
+        "llm/downstream/product/claude-code.md",
+        "llm/downstream/product/codex.md",
+        "llm/downstream/product/opencode.md",
+      ] },
       "llm/downstream/api-provider.md",
       { "智能体" = [
         "llm/downstream/agent/index.md",
@@ -339,13 +350,6 @@ toggle.icon = "lucide/moon-star"
 toggle.name = "切换到自动模式"
 
 # ==============================
-# Link Validator
-# ==============================
-
-[project.validation]
-unresolved_references = false
-
-# ==============================
 # Plugin
 # ==============================
 
@@ -356,32 +360,6 @@ lang = "zh"
 [[project.plugins]]
 [project.plugins.glightbox]
 auto_caption = true
-
-# ==============================
-# Extra
-# ==============================
-
-[project.extra.analytics]
-provider = "google"
-property = "G-56NDVC0D5B"
-
-[project.extra.status]
-todo = "TODO"
-
-[[project.extra.social]]
-icon = "lucide/radio-tower"
-link = "https://stats.uptimerobot.com/uDFPc6P9Xc/802518309"
-name = "Status"
-
-[[project.extra.social]]
-icon = "lucide/clover"
-link = "https://blog.dwj601.cn/"
-name = "Blog"
-
-[[project.extra.social]]
-icon = "lucide/lightbulb"
-link = "https://www.dwj601.cn/"
-name = "Homepage"
 
 # ==============================
 # Markdown Extension
@@ -410,11 +388,49 @@ generic = true
 emoji_generator = "zensical.extensions.emoji.to_svg"
 emoji_index = "zensical.extensions.emoji.twemoji"
 [project.markdown_extensions.pymdownx.highlight]
-auto_title = true
+# auto_title = true
 use_pygments = true
 pygments_lang_class = true
+# linenums = true
 anchor_linenums = true
 line_spans = "__span"
 [project.markdown_extensions.pymdownx.inlinehilite]
 [project.markdown_extensions.pymdownx.tasklist]
 custom_checkbox = true
+
+# ==============================
+# Others
+# ==============================
+
+[project.extra.analytics]
+provider = "google"
+property = "G-56NDVC0D5B"
+
+[project.extra.status]
+todo = "TODO"
+
+[[project.extra.social]]
+icon = "lucide/radio-tower"
+link = "https://stats.uptimerobot.com/uDFPc6P9Xc/802518309"
+name = "站点状态"
+
+[[project.extra.social]]
+icon = "lucide/lightbulb"
+link = "https://www.dwj601.cn/"
+name = "站长主页"
+
+[project.extra.ads]
+enabled = true
+title = "🎁 活动"
+closable = true
+close_expires_hours = 24
+
+[[project.extra.ads.items]]
+text = "飞由智能 · 注册送 5 刀额度，可用 GPT-5.5 等顶级 AI 模型"
+href = "https://api.clearouter.top/sign-up?aff=baRR"
+color = "#908fff"
+
+[[project.extra.ads.items]]
+text = "阿里云 · 轻量服务器 68 元/年"
+href = "https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=jpec1z57"
+color = "orange"

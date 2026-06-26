@@ -141,72 +141,70 @@ icon: material/medal-outline
 
 题意：给定一个 $n$ 行 $m$ 列的矩阵 $a\ (1\le a_{ij}\le 10^9)$，满足 $1\le n,m \le 10^4,1\le n\times m \le10^6$。给定在矩阵中的行走规则：可以走到同行同列中任意一个满足「向左或向上比当前元素大的位置上」、「向右或向下比当前元素小的位置上」。计算每个格子可以到达的最大高度，输出其均值并保留 $6$ 位小数。
 
-思路：直接遍历每一个连通分量即可，可以用 DSU，也可以二次遍历来给连通分量中每个位置标上可到达的最大值。其余实现可以参考 [01 迷宫](../topic/base.md#例01-迷宫) 这道题。
+思路：直接遍历每一个连通分量并维护其大小即可。可以使用二次遍历或 DSU 来维护每一个连通分量的大小。为了方便，这里就用 BFS 遍历了。DFS 实现可以参考 [01 迷宫](../topic/base.md#例01-迷宫) 这道题。
 
 时间复杂度：$O(nm(n+m))$
 
-=== "Python BFS"
+```python
+from collections import deque
 
-    ```python
-    from collections import deque
-    
-    n, m = tuple(map(int, input().strip().split()))
-    g = [list(map(int, input().strip().split())) for _ in range(n)]
-    ans = [[0] * m for _ in range(n)]
-    
-    vis = [[False] * m for _ in range(n)]
-    
-    def bfs(u: int, v: int):
-        q = deque()
-        path = []
-        ma = -1
-    
-        vis[u][v] = True
-        path.append((u, v))
-        q.append((u, v))
-        ma = max(ma, g[u][v])
-    
-        while q:
-            x, y = q.popleft()
-            for j in range(m):
-                if j < y and g[x][j] > g[x][y] and not vis[x][j]:
-                    vis[x][j] = True
-                    path.append((x, j))
-                    q.append((x, j))
-                    ma = max(ma, g[x][j])
-                if j > y and g[x][j] < g[x][y] and not vis[x][j]:
-                    vis[x][j] = True
-                    path.append((x, j))
-                    q.append((x, j))
-                    ma = max(ma, g[x][j])
-            for i in range(n):
-                if i < x and g[i][y] > g[x][y] and not vis[i][y]:
-                    vis[i][y] = True
-                    path.append((i, y))
-                    q.append((i, y))
-                    ma = max(ma, g[i][y])
-                if i > x and g[i][y] < g[x][y] and not vis[i][y]:
-                    vis[i][y] = True
-                    path.append((i, y))
-                    q.append((i, y))
-                    ma = max(ma, g[i][y])
-    
-        for x, y in path:
-            ans[x][y] = ma
-    
-    for i in range(n):
+n, m = tuple(map(int, input().strip().split()))
+g = [list(map(int, input().strip().split())) for _ in range(n)]
+ans = [[0] * m for _ in range(n)]
+
+vis = [[False] * m for _ in range(n)]
+
+def bfs(u: int, v: int):
+    q = deque()
+    path = []
+    ma = -1
+
+    vis[u][v] = True
+    path.append((u, v))
+    q.append((u, v))
+    ma = max(ma, g[u][v])
+
+    while q:
+        x, y = q.popleft()
         for j in range(m):
-            if vis[i][j]:
-                continue
-            bfs(i, j)
-    
-    s = 0
-    for i in range(n):
-        for j in range(m):
-            s += ans[i][j]
-    
-    print(f"{s/(n * m):.6f}")
-    ```
+            if j < y and g[x][j] > g[x][y] and not vis[x][j]:
+                vis[x][j] = True
+                path.append((x, j))
+                q.append((x, j))
+                ma = max(ma, g[x][j])
+            if j > y and g[x][j] < g[x][y] and not vis[x][j]:
+                vis[x][j] = True
+                path.append((x, j))
+                q.append((x, j))
+                ma = max(ma, g[x][j])
+        for i in range(n):
+            if i < x and g[i][y] > g[x][y] and not vis[i][y]:
+                vis[i][y] = True
+                path.append((i, y))
+                q.append((i, y))
+                ma = max(ma, g[i][y])
+            if i > x and g[i][y] < g[x][y] and not vis[i][y]:
+                vis[i][y] = True
+                path.append((i, y))
+                q.append((i, y))
+                ma = max(ma, g[i][y])
+
+    for x, y in path:
+        ans[x][y] = ma
+
+for i in range(n):
+    for j in range(m):
+        if vis[i][j]:
+            continue
+        bfs(i, j)
+
+s = 0
+for i in range(n):
+    for j in range(m):
+        s += ans[i][j]
+
+print(f"{s/(n * m):.6f}")
+```
 
 ## T8 原料采购 (20'/20')
 

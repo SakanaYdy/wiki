@@ -1,14 +1,14 @@
 ---
-title: PyTorch
+title: 神经网络库
 status: todo
 icon: simple/pytorch
 ---
 
-本文记录 [PyTorch](https://github.com/pytorch/pytorch) 的基本用法。
+本文记录并行计算与神经网络库 [PyTorch](https://github.com/pytorch/pytorch) 的基本用法。
 
 ## 安装 PyTorch
 
-默认大家对 [CPU 体系](../../base/cs/operating-system/index.md) 有一定的了解，那么从 CPU 过渡到 GPU 就有迹可循了：
+默认大家对 [CPU 体系](../../../base/cs/operating-system/index.md) 有一定的了解，那么从 CPU 过渡到 GPU 就有迹可循了：
 
 | 层级         | CPU                  | GPU            |
 | ------------ | -------------------- | -------------- |

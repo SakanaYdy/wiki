@@ -9,42 +9,6 @@ icon: simple/cplusplus
 
 ## 基础算法
 
-### 闭区间二分
-
-![查找区域](https://cdn.dwj601.cn/images/20250515144500232.png)
-
-=== "闭区间寻找左边界"
-
-    ```c++
-    void bisect_left(int target) {
-        int l = 左边界, r = 右边界;
-        while (l < r) {
-            int mid = (l + r) >> 1;
-            if (合法 or 偏大) {
-                r = mid;
-            } else {  // 偏小
-                l = mid + 1;
-            }
-        }
-    }
-    ```
-
-=== "闭区间寻找右边界"
-
-    ```c++
-    void bisect_right(int target) {
-        int l = 左边界, r = 右边界;
-        while (l < r) {
-            int mid = (l + r + 1) >> 1;
-            if (合法 or 偏小) {
-                l = mid;
-            } else {  // 偏大
-                r = mid - 1;
-            }
-        }
-    }
-    ```
-
 ### 自定义排序
 
 假设一个数据类型有身高 `height`、分数 `score`  和年龄 `age` 三个字段，现在的排序需求是：分数越高越靠前、若分数相同则年龄越小越靠前。

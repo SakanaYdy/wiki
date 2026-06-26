@@ -373,64 +373,134 @@ docker run -d \
 
 ## 多容器编排
 
-一台机器或者一个服务往往需要多个容器进行协作，Docker Compose 就派上用场了。Docker Compose 是用于定义和运行多容器 Docker 编排工具，使用 [YAML](../../others/data-serialization-format.md) 配置。
+一个服务往往需要多个服务进行协作，例如一个后端服务，一个数据库服务，一个 GPU 推理服务等，如果用 Docker 一个一个管理明显不够优雅，Docker Compose 就派上用场了。
+
+Docker Compose 是用于定义和运行多容器的工具，使用 [YAML](../../others/data-serialization-format.md) 配置。正常安装 Docker 以后，默认会一起安装 Docker Compose。可以输入以下命令检查安装状态：
+
+```bash
+docker compose version
+```
+
+如果可以正常输出版本号就可以开始使用了。
 
 ### Docker Compose 常用命令
 
+启动服务：
+
 ```bash
-# 启动所有服务
-docker-compose up -d
-
-# 停止所有服务
-docker-compose down
-
-# 查看服务状态
-docker-compose ps
-
-# 查看服务日志
-docker-compose logs -f
+# 构建镜像
+docker compose build
 
 # 重启服务
-docker-compose restart
+docker compose restart
 
-# 构建镜像
-docker-compose build
+# 启动所有服务
+docker compose up
 
-# 扩展服务实例
-docker-compose up -d --scale web=3
+# 启动指定服务
+docker compose up <service_name_1> <service_name_2>
+
+# 后台启动所有服务
+docker compose up -d
+```
+
+停止服务：
+
+```bash
+# 停止所有服务
+docker compose stop
+
+# 停止指定服务
+docker compose stop <service_name>
+
+# 停止所有服务并删除容器（无法指定 service）
+docker compose down
+
+# 停止所有容器并删除容器、删除网络、删除数据卷
+docker compose down -v
+```
+
+监控服务：
+
+```bash
+# 查看服务状态
+docker compose ps
+
+# 查看服务日志
+docker compose logs -f
 ```
 
 ### Docker Compose 示例配置
 
-创建 `docker-compose.yml` 文件：
+假设目前要写一个推理接口业务，只需要使用 FastAPI 暴露接口，数据库、推理服务等就没必要暴露接口，全部使用内部网络即可。示例 `docker-compose.yml` 文件如下：
 
 ```yaml
-version: '3.8'
-
+# 服务配置
 services:
   web:
-    image: nginx:latest
+    container_name: fastapi-web
+    build: .
     ports:
-      - "8080:80"
-    volumes:
-      - ./html:/usr/share/nginx/html
-    networks:
-      - app-network
-
-  db:
-    image: mysql:8.0
+      - "8000:8000"
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: mydb
-    volumes:
-      - db-data:/var/lib/mysql
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/app
+      REDIS_URL: redis://redis:6379/0
+      INFERENCE_URL: http://inference:8080
+    depends_on:
+      - postgres
+      - redis
+      - inference
     networks:
       - app-network
 
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+  inference:
+    container_name: gpu-inference
+    image: rocm/pytorch-training:v25.6
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+    volumes:
+      - ./models:/workspace/models
+      - ./data:/workspace/data
+    working_dir: /workspace
+    tty: true
+    shm_size: 16g
+    networks:
+      - app-network
+
+# 网络配置
 networks:
   app-network:
     driver: bridge
 
+# 数据卷配置
 volumes:
-  db-data:
+  postgres-data:
+  redis-data:
+```
+
+Docker Compose 默认使用 `docker-compose.yml` 和 `docker-compose.yaml` 文件，也可以在运行时指定配置文件。例如：
+
+```bash
+docker compose -f </path/to/your_compose.yaml> [commands]
 ```

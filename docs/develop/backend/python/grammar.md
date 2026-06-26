@@ -4,127 +4,132 @@ status: todo
 icon: material/stairs-up
 ---
 
-本文介绍 Python 的语法基础，即不 `import` 任何包的情况下需要涉及到的内容，标准文档见 [Reference - Python Docs](https://docs.python.org/zh-cn/3.14/reference/index.html) 官网。
+本文介绍 Python 的 [语法基础](https://docs.python.org/zh-cn/3.14/reference/index.html)，即不 `import` 任何包的情况下涉及的内容。
 
 ## 数据类型
 
-Python 是动态类型语言，变量不需要声明类型，赋值时会自动确定类型。
+Python 是动态类型语言，定义变量时不需要声明类型，赋值时会自动确定。但也支持在定义变量时写上预期的数据类型，不过解释器不会主动检查数据类型不匹配的问题，可以借助第三方 [类型检查](./index.md#类型检查) 工具来避免此类错误。
 
-> [!tip]
->
-> Python 支持在声明变量时写上预期的数据类型，但并不会主动检查数据类型不匹配的错误，可以借助第三方 [类型检查](./index.md#类型检查) 工具来避免此类错误。
+### 不可变数据类型
 
-### 整型
-
-```python
-x: int = 10
-```
-
-### 浮点型
-
-```python
-y: float = 3.14
-```
-
-### 布尔型
+`bool`:
 
 ```python
 is_active: bool = True
 ```
 
-### 字符串
-
-基本用法：
+`int`:
 
 ```python
+x: int = 10
+```
+
+`float`:
+
+```python
+y: float = 3.14
+```
+
+`str`:
+
+```python
+# 基本用法
 info: str = "Alice"
-```
 
-字符转义：
-
-```python
+# 字符转义
 info = "hello\tworld"  # hello    world
-
+# 取消字符转义，输出原始内容（r 即 raw）
 info = r"hello\tworld"  # hello\tworld
-```
 
-其中：
-
-- Python 会对其中的特殊字符转义，例如 `\t` 会被转义为一个 tab；
-- `r` 表示输出原始内容，不会对其中的内容进行转义。
-
-字符模板 (f-string)：
-
-```python
+# 字符模板 (f-string)
 age = 18.88
 info = (f"My age is {age:.1f}, "
         f"and you?")  # My age is 18.9, and you?
+# 跨行字符串可以使用小括号包裹
+# :.1f 表示给浮点数四舍五入保留 1 位小数
+
+# 字符串拼接
+# 使用 str 的 join 方法，将迭代器中的 str 拼接为一个完整版的字符串
+# 相较于使用 += 省去了存储中间对象的内存开销，提升了程序的性能
+num = [1314, 520, 601]
+splice_str = "-".join(str(x) for x in num)  # 1314-520-601
 ```
 
-其中：
-
-- 跨行字符串可以使用小括号包裹；
-- 模板中 `:.1f` 表示给浮点数四舍五入保留 1 位小数。
-
-### 列表
-
-可变序列。可以理解为线性表，$O(1)$ 尾插入、$O(1)$ 尾删除：
+`tuple`: [顺序表](../../../ds-and-algo/topic/ds.md#顺序表) 数据结构，数据定义好后无法修改。
 
 ```python
-# 初始化
-fruits = ["apple", "banana", "cherry"]
-
-# 尾插入
-fruits.append("orange")
-
-# 尾删除
-fruits.pop()
-
-# 删除第一个匹配到的元素
-fruits.remove("banana")
-
-print(fruits[0])    # 访问列表第一个元素
-print(fruits[1:3])  # 切片，访问第二到第三个元素
-```
-
-列表推导式是创建列表的一种简洁方式：
-
-```python
-squares = [x**2 for x in range(5)]  # 生成 0 到 4 的平方
-print(squares)
-```
-
-### 元组
-
-不可变的序列类型，一旦创建不能修改：
-
-```python
-coordinates = (10, 20)
+coordinates: tuple = (10, 20)
 print(coordinates[0])  # 访问元组的第一个元素
 ```
 
-### 字典
+### 可变数据类型
 
-由键值对组成：
+`dict`: [哈希表](../../../ds-and-algo/topic/ds.md#哈希表) 数据结构。
 
 ```python
-person = {"name": "Alice", "age": 25}
-person["age"] = 26           # 修改字典中的值
-person["city"] = "New York"  # 添加新的键值对
+# 字典创建（可哈希对象才能作为键，不可变数据类型都可以作为字典的键）
+person: dict[str, str | int] = {"name": "Alice", "age": 25}
 
-print(person["name"])  # 访问值
+# 值修改
+person["age"] = 26
+
+# 创建新的键值对
+person["city"] = "New York"
+
+# 根据键访问值
+print(person["name"])
+print(person.get("name", "")) 更安全的访问方法，当字典不存在时，返回第二个参数，这里是 ""
+
+# 查询是否存在某个键 O(1)
+if "bob" in person:
+    pass
+# 等价于（基本不这么写）
+if "bob" in person.keys():
+    pass
+
+# 查询是否存在某个值 O(n)
+if "bob" in person.values():
+    pass
+
+# 查询是否存在某个键值对 O(1)
+if "bob" in person.items():
+    pass
 ```
 
-### 集合
-
-一个无序且不重复的元素集合：
+`list`: 同样是 [顺序表](../../../ds-and-algo/topic/ds.md#顺序表) 数据结构，但是可以修改以及增删内容。
 
 ```python
-colors = {"red", "green", "blue"}
+# 初始化
+fruits: list[str] = ["apple", "banana", "cherry"]
+
+# 初始化（列表推导式）
+squares = [x**2 for x in range(5)]  # 生成 0 到 4 的平方
+
+# 尾插入 O(1)
+fruits.append("orange")
+
+# 尾删除 O(1)
+fruits.pop()
+
+# 按值删除 O(n)，删除第一个匹配到的元素
+fruits.remove("banana")
+
+# 按索引删除 O(n)
+del fruits[1]
+
+# 索引（超出最大索引值会报错 list index out of range）
+print(fruits[0])
+
+# 切片（超出最大索引不会报错）
+print(fruits[1:3])
+```
+
+`set`: 同样是 [哈希表](../../../ds-and-algo/topic/ds.md#哈希表) 数据结构，可以理解为只保留 key 的 `dict`。
+
+```python
+colors: set[str] = {"red", "green", "blue"}
 colors.add("yellow")  # 添加元素
 colors.remove("green")  # 删除元素
-
-print(colors)
 ```
 
 ## 运算符
@@ -278,13 +283,37 @@ Python 中的解包机制让参数传递变得更灵活。解包分成两类：
     > user = User(**data)
     > ```
 
-### lambda
+### `lambda`
 
-lambda 函数是一种简洁的匿名函数，通常用于简单的函数体。
+`lambda` 函数是一种简洁的匿名函数，适合编写非常简单、一次性的函数逻辑：
 
 ```python
 square = lambda x: x**2
 print(square(5))  # 25
+```
+
+不过，根据 [PEP 8](https://peps.python.org/pep-0008/#programming-recommendations) 的建议，在真实项目中并不推荐将 `lambda` 赋值给变量，应当使用 `def` 定义函数：
+
+```diff
+- square = lambda x: x**2
++ def square(x):
++     return x**2
+```
+
+原因包括：
+
+- 使用 `def` 会让函数名出现在 traceback 中，更有利于调试。
+- `lambda` 的核心价值在于内联使用，一旦赋值给变量就失去了匿名函数的意义。
+
+因此，`lambda` 更适合作为参数直接传递给高阶函数：
+
+```python
+# 示例一
+nums = [1, 2, 3]
+result = map(lambda x: x * 2, nums)
+
+# 示例二
+students.sort(key=lambda s: s.score)
 ```
 
 ## 类
@@ -323,7 +352,7 @@ print(dog._Dog__calculate_dog_years())  # 21
 
 ## 模块
 
-模块即一个以 `.py` 为后缀的代码文件，其中可以包括类、函数、变量等任意 Python Object。
+模块，即一个以 `.py` 为后缀的代码文件，其中可以包括类、函数、变量等任意 Python Object。
 
 ### `__all__`
 
@@ -411,18 +440,20 @@ print(dog._Dog__calculate_dog_years())  # 21
 
 ## 异常
 
-现实场景下，程序的输入或运行几乎不可能始终正确，为了避免程序在出现异常时直接宕机，程序员需要主动编写代码，来应对可能的异常。基本异常处理逻辑主要分两步：
+现实场景下，程序的输入或运行几乎不可能始终正确，为了避免程序在出现异常时直接宕机，开发人员需要主动编写代码，来应对可能的异常，以确保系统的鲁棒性。
 
-1. 产生异常：Python 使用 `raise` 关键字来产生异常。
-2. 捕获异常：Python 使用 `try`、`except`、`finally` 关键字捕获异常。
+基本异常处理逻辑主要分两步：
+
+1. 抛出异常：Python 使用 `raise` 关键字来抛出异常。
+2. 捕获和处理异常：Python 使用 `try`、`except` 和 `finally` 关键字捕获和处理异常。
 
 在发生 `raise ErrorType()` 后，Python 会做三件事：
 
 1. 构造异常对象；
 2. 停止当前函数的执行；
-3. 基于函数调用栈「逐层向上」查找异常处理器（即 `try, except` 逻辑）。
+3. 基于函数调用栈「逐层向上」查找异常处理器 `try`。
 
-### 产生异常
+### 抛出异常
 
 基本语法：
 
@@ -443,30 +474,63 @@ raise FileNotFoundError("file not found")
 raise ZeroDivisionError("division by zero")
 ```
 
-### 捕获异常
+### 捕获和处理异常
 
-基本语法：
+> [!note] 原则
+>
+> 能在当前层级处理的异常就立刻处理，无法处理的异常就抛出让上层处理。
+
+实际编码过程中，往往需要配合标准库中的 [logging](./std-lib.md#logging) 模块，达到最佳实践：
 
 ```python
+import logging
+
+logger = logging.getLogger(__name__)
+
 try:
+    # 正常业务逻辑
     ...
-except A:
-    ...
-except B as e:
-    ...
-else:
-    ...
+except (
+    TimeoutError,
+    ConnectionError,
+) as e:
+    # 可预见的、可解决的异常，直接重试
+    retry(e)
+except ModuleNotFoundError as e:
+    # 可预见的、无法解决的异常，向上抛出
+    return error_response(e)
+except Exception:
+    # 不可预见的异常，先记录，再抛出
+    logger.exception("unexpected error")  # 记录异常
+    raise  # 向上抛出
 finally:
+    # 无论上述结果如何，都会执行这段逻辑，例如释放资源等
     ...
 ```
 
-其基本逻辑是：
+## 断言
 
-- `try` 后跟随基本业务逻辑；
-- 如果出现 A 错误，则执行 `handle()` 函数（针对任意异常）；
-- 如果出现 B 错误，则执行 `handle(e)` 函数（针对 B 异常）；
-- 如果没有出现错误，则执行 `else` 后面的逻辑；
-- 无论上述结果如何，都会执行 `finally` 后面的逻辑。
+在代码编写的过程中，为了快速验证逻辑，我们一般会使用断言语句，即 assert。其基本用法是：
+
+```python
+assert statement, assertion
+```
+
+这里 statement 即为需要验证的逻辑，当 statement 为 True 时程序才会继续执行下面的语句；assertion 即为 statement 为 False 时抛出的 AssertionError 的内容。本质上相当于：
+
+```python
+if not x:
+    raise AssertionError("something error")
+```
+
+不过在生产环境下建议使用：
+
+```python
+if not x:
+    raise ValueError("something error")
+```
+
+因为 Python 在 `-O` 模式下会移除所有 `assert`。
 
 ## 迭代器与生成器
 

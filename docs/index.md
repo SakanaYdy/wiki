@@ -2,10 +2,8 @@
 title: 首页
 ---
 
-# Open CS/AI Wiki
-
 <p align="center" style="font-size: 1.5em; font-weight: bold;">
-    一个围绕计算机与人工智能的知识库
+    斟知 &middot 一个围绕计算机与人工智能的知识库
 </p>
 
 ![](./assets/images/wiki-cover-image.jpg)
@@ -60,20 +58,20 @@ title: 首页
 
     ---
 
-    碍于笔者认知，笔记内容难免有些偏差。如果您在阅读的过程中遇到了困惑，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](./contributing.md)。下图是本项目的协作者：
+    碍于笔者认知，知识库内容难免有些偏差或不足。如果您在阅读的过程中遇到了困惑，或者希望完善知识库，请不要吝啬您的意见或建议。详细的贡献方法请移步 [参与贡献](./contributing.md) 作进一步了解。下图是本项目的协作者：
 
-    ![贡献名单](https://stg.contrib.rocks/image?repo=Explorer-Dong/wiki)
+    ![贡献名单](https://stg.contrib.rocks/image?repo=Explorer-Dong/open-csai-wiki)
 
 -   :lucide-star:{ .lg .middle } **支持项目**
 
     ---
 
-    如果觉得网站内容对您有帮助，欢迎进入 [GitHub](https://github.com/Explorer-Dong/wiki) 为我们的项目点一颗 ⭐。下图是本项目的星标历史：
+    如果网站内容有幸帮助到了您，欢迎前往 [GitHub](https://github.com/Explorer-Dong/open-csai-wiki) 为我们的项目点一颗宝贵的⭐。下图是本项目的星标历史：
 
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&theme=dark&legend=bottom-right" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&legend=bottom-right" />
-      <img alt="星标历史" src="https://api.star-history.com/svg?repos=Explorer-Dong/wiki&type=date&legend=bottom-right" />
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&theme=dark&legend=bottom-right" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&legend=bottom-right" />
+      <img alt="星标历史" src="https://api.star-history.com/svg?repos=Explorer-Dong/open-csai-wiki&type=date&legend=bottom-right" />
     </picture>
 
 </div>

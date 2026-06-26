@@ -315,3 +315,50 @@ scp [-i <path/to/private_key>] <source> <target>
 # 递归传输（适用于文件夹）
 scp [-r] <source> <target>
 ```
+
+## 数据传输工具 cURL
+
+[cURL](https://github.com/curl/curl) (Client URL) 是一款支持 URL 语法的命令行数据传输工具，支持 HTTP/HTTPS、FTP、SFTP 等多种协议。与 [wget](#下载器-wget) 和 [aria2](#高性能下载器-aria2) 不同，cURL 默认将内容输出到标准输出，适合用于 API 测试和调试。
+
+命令格式：
+
+```bash
+curl [<param>] <url>
+```
+
+基本命令：
+
+```bash
+# 发送 GET 请求
+curl <url>
+
+# 指定请求方法
+curl -X POST <url>
+
+# 发送 JSON 数据
+curl -X POST -H "Content-Type: application/json" -d '{"key":"value"}' <url>
+
+# 显示响应头（与响应体一同显示）
+curl -i <url>
+
+# 只显示响应头
+curl -I <url>
+
+# 下载文件（使用 -O 保持远程文件名）
+curl -O <url>
+
+# 下载文件并指定保存的文件名
+curl -o <filename> <url>
+
+# 静默模式（不显示进度条和错误信息以外的内容）
+curl -s <url>
+
+# 跟随重定向
+curl -L <url>
+
+# 失败时不输出错误 HTML 页面，只输出错误码
+curl -f <url>
+
+# 发送带自定义请求头的请求
+curl -H "Authorization: Bearer <token>" <url>
+```

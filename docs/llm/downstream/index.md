@@ -2,12 +2,19 @@
 title: 下游应用
 ---
 
-随着模型能力的演进，仅仅在网页上对话已经无法发挥出其全部实力了，需要结合一些工程策略来彻底释放 AI 的能力。目前常见的有：
+随着模型能力的演进，仅仅在网页上对话已经无法发挥出其全部实力了，需要结合一些工程策略来彻底释放 AI 的能力。目前已经演化出了以下几种工程策略：
 
-- 检索生成增强 (Retrieval-Augmented Generation, RAG)：一种提示词策略，通过向量检索来丰富大模型的输入，从而降低模型幻觉。比较著名的开源 RAG 工具有 [RAGFlow](https://github.com/infiniflow/ragflow) 等。当然，随着大模型的上下文越来越大，RAG 的作用逐渐存疑。
-- 工作流 (Workflow)：用户自定义一个工作流程，然后让大模型在其中起决策性作用。常见的 Workflow 编排工具有 [Dify](https://dify.ai/zh)、[扣子](https://code.coze.cn/home) 等。
-- 智能体 (Agent)：相较于 Workflow 需要编排任务流程，Agent 则是直接基于任务让大模型自己做各种行动和决策，大模型的自主性更高。目前 [智能体能力](https://artificialanalysis.ai/agents/coding-agents) 也已经成为大模型能力的核心评判标准之一。比较常见的智能体就是代码智能体 (Code Agent)，例如 [Cursor](https://cursor.com/)、[Claude Code](https://code.claude.com/docs/zh-CN/overview)、[Codex](https://chatgpt.com/codex)、[OpenCode](https://opencode.ai/) 等。其他诸如办公、金融、教育等类型的智能体本质上就是把提示词从代码切换为了其它类型的数据源，工作逻辑都是类似的。
+**提示词工程 (Prompt Engineering)**。人们需要手动优化输入的提示词。例如：
 
-无论形式如何，大模型的下游应用本质上都是一种 [提示词工程](https://developers.openai.com/api/docs/guides/prompt-engineering) (Prompt Engineering)，即通过合适的提示词以及工程化机制引导大模型输出想要的结果。OpenAI 是这样解释 Prompt Engineering 的：
+- 思维链推理 (Chain of Thought, [CoT](https://arxiv.org/abs/2201.11903)) 提示词：Let's think step by step。
+- 角色扮演 ([Role-Play](https://arxiv.org/abs/2305.16367)) 提示词：You are a XXX Master。
 
-> Prompt engineering is the process of writing effective instructions for a model, such that it consistently generates content that meets your requirements.
+**上下文工程 (Context Engineering)**。人们希望简化上述流程，一句“帮我修一下现在的 bug”，整个系统就会把所有必要的信息聚合起来，和这句提示词一起输入模型。例如：
+
+- 检索增强生成 (Retrieval-Augmented Generation, [RAG](https://arxiv.org/abs/2005.11401))。
+- 模型上下文协议 (Model Context Protocol, [MCP](./agent/mcp.md))。
+
+**约束工程 (Harness Engineering)**。一个 AI 系统不止需要丰富的输入，还需要稳定地运行，在长上下文场景下，模型很容易出现信息漂移、幻觉增加等负面效应。为此，自我约束、自我验证的 AI 系统范式 Harness Engineering 应运而生。例如：
+
+- Anthropic 推出的智能体 [Claude Code](./product/claude-code.md)。
+- OpenAI 推出的智能体 [Codex](https://chatgpt.com/codex)。

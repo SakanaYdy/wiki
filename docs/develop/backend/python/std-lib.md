@@ -184,35 +184,30 @@ print(f"转换后: {beijing_time}")
 
 ## enum
 
-enum 提供了枚举体，主要用来封装一些 magic number：
+enum 提供了枚举体，主要用来封装一些 magic variable。
 
-```python
+### 基本用法
+
+```python hl_lines="13 17"
 from enum import Enum, StrEnum
-
 
 class Color(Enum):
     RED = 1
     GREEN = 2
     BLUE = 3
 
-
-print(Color.RED)  # Color.RED
-print(Color.RED.name)  # RED
-print(Color.RED.value)  # 1
-```
-
-除了 magic number，magic str 也经常会遇到：
-
-```python hl_lines="7"
 class Status(StrEnum):
-    CREATED = "Task is created."
-    SUCCESS = "Task finished successfully."
-    FAILED = "Task finished failure."
+    CREATED = "created"
+    SUCCESS = "success"
+    FAILED = "failed"
 
+print(Color.RED, type(Color.RED))  # Color.RED <enum 'Color'>
+print(Color.RED.name, type(Color.RED.name))  # RED <class 'str'>
+print(Color.RED.value, type(Color.RED.value))  # 1 <class 'int'>
 
-print(Status.CREATED)  # Task is created.
-print(Status.CREATED.name)  # CREATED
-print(Status.CREATED.value)  # Task is created.
+print(Status.CREATED, type(Status.CREATED))  # created <enum 'Status'>
+print(Status.CREATED.name, type(Status.CREATED.name))  # CREATED <class 'str'>
+print(Status.CREATED.value, type(Status.CREATED.value))  # created <class 'str'>
 ```
 
 使用枚举体的好处：
@@ -221,6 +216,53 @@ print(Status.CREATED.value)  # Task is created.
 - 相较于直接定义宏，枚举体可以将宏集中在一起，便于管理；
 - 可以被一些 [数据校验器](./network-lib.md#pydantic) 捕获并验证；
 - 更好地利用 IDE 的智能补全。
+
+### 与 argparse 联动
+
+值得注意的是，上述代码高亮的两行输出结果是不一样的，继承 StrEnum 的类中的元素被直接输出为字符串（即使 type 仍然为 enum）：
+
+```python
+from enum import StrEnum
+
+class Mode(StrEnum):
+    X = "run"
+    Y = "stop"
+    Z = "clear"
+
+mode_to_list = list(Mode)
+
+print(mode_to_list)  # [<Mode.X: 'run'>, <Mode.Y: 'stop'>, <Mode.Z: 'clear'>]
+print(mode_to_list[0] == "run")  # True
+```
+
+利用可以直接和 `str` 比较这一点，我们可以和 [`argparse`](#argparse) 一起约束某些输入值有限的场景：
+
+```python
+from argparse import ArgumentParser
+from enum import StrEnum
+
+class Mode(StrEnum):
+    X = "run"
+    Y = "stop"
+    Z = "clear"
+
+parser = ArgumentParser()
+parser.add_argument("--mode", choices=list(Mode), type=Mode)
+args = parser.parse_args()
+
+print(args.mode, type(args.mode))
+
+if args.mode == "run":
+    print("run mode")
+```
+
+假设文件名为 `demo.py`，运行后终端会输出：
+
+```bash
+$ python demo.py --mode run
+run <enum 'Mode'>
+run mode
+```
 
 ## functools
 
@@ -463,6 +505,83 @@ with open("user_info.jsonl", encoding="utf-8") as f:
 """
 ```
 
+## logging
+
+`logging` 是 Python 标准库提供的日志记录工具，支持日志级别过滤、格式化输出、多种输出目标（控制台、文件等）。
+
+### 基本用法
+
+```python
+import logging
+
+# 配置日志格式和级别
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+logging.debug("调试信息")
+logging.info("一般信息")
+logging.warning("警告信息")
+logging.error("错误信息")
+logging.critical("严重错误信息")
+
+"""输出
+2026-05-31 15:53:06 [INFO] 一般信息
+2026-05-31 15:53:06 [WARNING] 警告信息
+2026-05-31 15:53:06 [ERROR] 错误信息
+2026-05-31 15:53:06 [CRITICAL] 严重错误信息
+"""
+```
+
+日志级别从低到高依次为：`DEBUG` < `INFO` < `WARNING` < `ERROR` < `CRITICAL`。设置 `level=logging.INFO` 后，低于 INFO 级别的日志（如 DEBUG）将不会输出。
+
+### 输出到文件
+
+```python
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("app.log", encoding="utf-8"),
+        logging.StreamHandler(),  # 同时输出到控制台
+    ],
+)
+```
+
+### 模块级 logger
+
+在大型项目中，推荐使用模块级 logger 替代全局 `logging` 对象。好处有两点：
+
+1. 日志溯源：通过 `__name__` 可以将调用模块的路径写入日志，清晰标注日志来源；
+2. 层级配置：logger 按包层级继承，例如设置 `"a"` 的日志级别为 WARNING 后，子模块 `"a.b"` 会自动继承，无需逐个配置。
+3. 日志隔离：直接使用根 logger 会让所有第三方库的日志也受 basicConfig 的影响。
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# 添加 handler（避免重复添加）
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter(
+        "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    ))
+    logger.addHandler(handler)
+
+logger.info("模块日志")
+
+"""输出
+2026-05-31 15:56:03 [INFO] __main__: 模块日志
+"""
+```
+
 ## os
 
 `os` 库是 Python 与操作系统交互的标准库，提供了丰富的文件系统操作和系统级功能。
@@ -492,6 +611,8 @@ print(f"当前目录文件: {files}")
 ```
 
 ### 路径操作
+
+建议使用 [pathlib](#pathlib) 库，而不是 os.path。
 
 ```python
 # 路径拼接（跨平台兼容）
@@ -560,10 +681,12 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-### 执行系统命令
+### 执行命令
+
+建议使用 [subprocess](#subprocess) 库。
 
 ```python
-# 执行系统命令（不推荐，建议使用 subprocess）
+# 执行命令
 os.system('ls -l')
 
 # 获取系统信息
@@ -573,42 +696,26 @@ print(f"路径分隔符: {os.sep}")  # '/' 或 '\'
 
 ## pathlib
 
-`pathlib` 是面向对象的路径操作库，比 `os.path` 更现代、更易用。
+`pathlib` 是面向对象的路径操作库，同时让开发人员无需关心操作系统的路径分隔符差异，比 `os.path` 更现代、更易用。
+
+### 基础操作
 
 ```python
 # 导入方法
 from pathlib import Path
 
 # 创建路径对象（填充值取决于操作系统）
-path = Path("/path/to/file")
-print(path)  # 会根据操作系统自动转换
+p = Path("/home/user/documents/report.tar.gz")
+print(p)  # 会根据操作系统自动转换
 
 # 路径拼接（使用 / 操作符，需要最左边为 Path 对象）
-new_path = Path("/home") / "subfolder" / "file.txt"
-```
+new_p = Path("/home") / "subfolder" / "file.txt"
 
-### 基础操作
+# 基础操作
+cwd = Path.cwd()  # 获取当前工作目录
+home = Path.home()  # 获取用户主目录
 
-```python
-from pathlib import Path
-
-# 获取当前工作目录
-cwd = Path.cwd()
-print(f"当前目录: {cwd}")
-
-# 获取用户主目录
-home = Path.home()
-print(f"主目录: {home}")
-```
-
-### 路径属性
-
-```python
-from pathlib import Path
-
-p = Path("/home/user/documents/report.tar.gz")
-
-# 路径组成部分
+# 获取路径属性
 print(f"所有父目录: {p.parent}")  # /home/user/documents
 print(f"文件名: {p.name}")  # report.tar.gz
 print(f"文件名去掉最后一个扩展: {p.stem}")  # report.tar
@@ -628,22 +735,26 @@ print(f"是否是目录: {p.is_dir()}")
 ```python
 from pathlib import Path
 
-# 读写文件
-p = Path('example.txt')
-p.write_text('Hello, World!', encoding='utf-8')
-content = p.read_text(encoding='utf-8')
+# 读写文本文件
+p = Path("/path/to/example.txt")
+p.write_text("Hello, World!", encoding="utf-8")
+content = p.read_text(encoding="utf-8")
 
 # 读写二进制
-p.write_bytes(b'\x00\x01\x02')
+p = Path("/path/to/example.pth")
 data = p.read_bytes()
+p.write_bytes(b'\x00\x01\x02')
 
 # 创建目录
-Path('new_folder').mkdir(exist_ok=True)
-Path('parent/child').mkdir(parents=True, exist_ok=True)
+Path("new_folder").mkdir(exist_ok=True)  # exist_ok=True 表示目录已存在时再次创建不会报错
+Path("parent/child").mkdir(parents=True, exist_ok=True)  # parents=True 表示递归创建
 
-# 删除文件和目录
-Path('file.txt').unlink(missing_ok=True)  # 删除文件
-Path('empty_folder').rmdir()  # 删除空目录
+# 删除文件
+Path("/path/to/file.txt").unlink()
+Path("/path/to/file.txt").unlink(missing_ok=True)  # missing_ok=True 表示即使文件不存在也不会报错
+
+# 删除目录（只能是空目录）
+Path("/path/tofolder").rmdir()
 
 # 重命名
 Path('old.txt').rename('new.txt')
@@ -751,6 +862,104 @@ print(email_pattern.findall(text2))
 pattern = re.compile(r'python', re.IGNORECASE)
 print(pattern.findall("Python PYTHON python"))  # 忽略大小写
 ```
+
+## subprocess
+
+当需要在 python 代码中执行一些外部命令时，subprocess 是一个不错的选择。核心 API：
+
+```python
+# 同步执行（阻塞）
+subprocess.run()
+
+# 异步执行（非阻塞）
+subprocess.Popen()
+```
+
+以执行外部命令 `java -jar sqlancer.jar --timeout-seconds 10` 为例：
+
+```python
+import subprocess
+
+cmd = [
+    "java",
+    "-jar",
+    "sqlancer.jar",
+    "--timeout-seconds",
+    "10",
+]
+
+# 启动
+subprocess.run(cmd)
+
+# 也可以接收返回结果
+result = subprocess.run(cmd)
+print(result.returncode)  # 打印返回码，一般 0 表示成功
+```
+
+### 输出控制
+
+subprocess 默认将命令的输出打印到终端。
+
+```python
+# 可以选择关闭
+subprocess.run(
+    cmd,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+
+# 也可以自己接收然后处理
+result = subprocess.run(
+    cmd,
+    capture_output=True,
+    text=True,
+)
+
+print(result.stdout)
+print(result.stderr)
+```
+
+### 设置运行目录
+
+```python
+import subprocess
+from pathlib import Path
+
+work_dir = Path("/path/to/project")
+
+subprocess.run(
+    cmd,
+    cwd=work_dir,
+)
+```
+
+### 命令拼接
+
+如果不想将命令分解为列表，可以让 Shell 参与，好处是编码方便，坏处是会让系统的 Shell 参与，可能会导致切换系统后代码跑不起来。
+
+```python
+cmd = "java -jar sqlancer.jar --timeout-seconds 10"
+
+subprocess.run(
+    cmd,
+    shell=True,
+)
+```
+
+### 异步运行
+
+```python
+process = subprocess.Popen(cmd)
+
+# 等待上述命令执行完成，不加就直接跳过
+process.wait()
+
+do_something()
+```
+
+> [!note]
+>
+> `.wait()` 类似于 await 一个 Coroutine，详见 [异步编程](./async-lib.md) 的笔记。
 
 ## sys
 
