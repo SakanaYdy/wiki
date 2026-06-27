@@ -288,6 +288,7 @@ nav = [
         "llm/downstream/agent/frameworks.md",
         "llm/downstream/agent/mcp.md",
         "llm/downstream/agent/interview.md",
+        "llm/downstream/agent/claude-code.md"
       ] },
     ] },
   ] },
